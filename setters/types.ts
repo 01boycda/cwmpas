@@ -5,7 +5,7 @@ export type Patient = {
     id: string,
     firstName: string,
     lastName: string,
-    level: number,
+    level: 'Prompting' | 'Some Support' | 'Step-by-Step Guidance' | 'Full Assistance' | 'Finish Assessment',
 }
 
 // List of screens that are allowed
@@ -15,6 +15,7 @@ export type RootStackParamList = {
     PatientProfile: {
         patient: Patient | undefined
     };
+    DailyActivities: undefined;
 }
 
 

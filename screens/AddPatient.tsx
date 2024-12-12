@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
-import { globalStyles, COLORS, FONTSTYLES } from "../styles";
+import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
 
 const AddPatient = (props: any) => {
     const nav = props.navigation;

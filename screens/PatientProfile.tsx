@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { globalStyles, COLORS, FONTSTYLES } from "../styles";
-import { EditScreenRouteProp, ScreenNavigationProp } from "../types";
+import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
+import { EditScreenRouteProp, ScreenNavigationProp } from "../setters/types";
 
 const PatientProfile = (props: any) => {
     const route = useRoute<EditScreenRouteProp>();
@@ -12,28 +12,26 @@ const PatientProfile = (props: any) => {
     const patient = route.params.patient;
 
     return (
-        <>
-            <View style={globalStyles.pageContainer}>
-                <Text style={FONTSTYLES.darkText}>Patient level: {patient?.level.toString()}</Text>
+        <View style={globalStyles.pageContainer}>
+            <Text style={FONTSTYLES.darkText}>Patient level: {patient?.level.toString()}</Text>
 
-                <ScrollView style={styles.functionalityDescriptionContainer}>
-                    <Text style={FONTSTYLES.darkText}>This is where the functionality description would go</Text>
-                </ScrollView>
+            <ScrollView style={styles.functionalityDescriptionContainer}>
+                <Text style={FONTSTYLES.darkText}>This is where the functionality description would go</Text>
+            </ScrollView>
 
-                <TouchableOpacity style={globalStyles.button}>
-                    <Text style={FONTSTYLES.buttonText}>Daily Activities</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={globalStyles.button}>
-                    <Text style={FONTSTYLES.buttonText}>Hobbies & Interests</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={globalStyles.button}>
-                    <Text style={FONTSTYLES.buttonText}>Your Story</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={globalStyles.button}>
-                    <Text style={FONTSTYLES.buttonText}>About CwmpasOT</Text>
-                </TouchableOpacity>
-            </View>
-        </>
+            <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("DailyActivities")}>
+                <Text style={FONTSTYLES.buttonText}>Daily Activities</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={globalStyles.button}>
+                <Text style={FONTSTYLES.buttonText}>Hobbies & Interests</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={globalStyles.button}>
+                <Text style={FONTSTYLES.buttonText}>Your Story</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={globalStyles.button}>
+                <Text style={FONTSTYLES.buttonText}>About CwmpasOT</Text>
+            </TouchableOpacity>
+        </View>
     )
 }
 
