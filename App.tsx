@@ -6,7 +6,7 @@ import Navigator from './Navigator';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { COLORS } from './styles';
+import { COLORS } from './setters/styles';
 
 const App = () => {
   const [loaded, error] = useFonts({

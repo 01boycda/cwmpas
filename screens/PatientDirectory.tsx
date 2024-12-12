@@ -4,8 +4,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { globalStyles, COLORS, FONTSTYLES } from '../styles';
-import { Patient, ScreenNavigationProp } from '../types';
+import { globalStyles, COLORS, FONTSTYLES } from '../setters/styles';
+import { Patient, ScreenNavigationProp } from '../setters/types';
 
 
 const PatientDirectory: React.FC = () => {

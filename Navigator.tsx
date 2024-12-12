@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import PatientDirectory from './screens/PatientDirectory';
 import PatientProfile from './screens/PatientProfile';
 import AddPatient from './screens/AddPatient';
+import DailyActivities from './screens/DailyActivities';
 
-import { COLORS, FONTSTYLES, globalStyles } from './styles';
-import { Patient, RootStackParamList } from './types';
+import { COLORS, FONTSTYLES, globalStyles } from './setters/styles';
+import { Patient, RootStackParamList } from './setters/types';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 const Navigator = () => {
 
     return (
@@ -19,30 +20,51 @@ const Navigator = () => {
                 <Stack.Screen
                     name={'PatientDirectory'}
                     component={PatientDirectory}
-                    options={{
-                        headerStyle: globalStyles.headerContainer,
-                        headerTintColor: COLORS.purpleLight,
-                        headerTitleStyle: FONTSTYLES.pageHeaderText,
+                    options={({ }) => {
+                        return {
+                            headerTitle: 'Patient Directory',
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                        };
                     }}
                 />
                 <Stack.Screen
                     name={'AddPatient'}
                     component={AddPatient}
-                    options={{
-                        headerStyle: globalStyles.headerContainer,
-                        headerTintColor: COLORS.purpleLight,
-                        headerTitleStyle: FONTSTYLES.pageHeaderText,
+                    options={({ }) => {
+                        return {
+                            headerTitle: 'Add Patient',
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                        };
                     }}
                 />
                 <Stack.Screen
                     name={'PatientProfile'}
                     component={PatientProfile}
-                    options={({ route }: { route: any }) => ({
-                        title: route.params.name,
-                        headerStyle: globalStyles.headerContainer,
-                        headerTintColor: COLORS.purpleLight,
-                        headerTitleStyle: FONTSTYLES.pageHeaderText,
-                    })}
+                    options={({ route }: { route: any }) => {
+                        return {
+                            headerTitle: `${route.params.patient.firstName} ${route.params.patient.lastName}`,
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                        };
+                    }}
+                />
+                
+                <Stack.Screen
+                    name={'DailyActivities'}
+                    component={DailyActivities}
+                    options={({ }) => {
+                        return {
+                            headerTitle: 'Daily Activities',
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                        };
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
@@ -50,3 +72,10 @@ const Navigator = () => {
 }
 
 export default Navigator;
+
+const styles = StyleSheet.create({
+    appContainer: {
+        backgroundColor: COLORS.black,
+        flex: 1,
+    }
+})

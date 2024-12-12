@@ -8,17 +8,13 @@ export const COLORS = {
     purpleSoft: '#674A7F',
     textContainer: '#BDAFA6',
 
-    textLight: '#D9CDE1',
-    textDark: '#0B0B0B',
-    textGrey: '#674A7F',
-
     black: '#0B0B0B',
     white: '#F0F2F3',
 }
 
 export const FONTSTYLES = StyleSheet.create({
     lightText: {
-        color: COLORS.textLight,
+        color: COLORS.purpleLighter,
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
     },
@@ -28,14 +24,14 @@ export const FONTSTYLES = StyleSheet.create({
         fontFamily: 'Roboto-Bold',
     },
     pageHeaderText: {
-        color: COLORS.white,
+        color: COLORS.purpleLighter,
         fontSize: 30,
         fontWeight: '300',
         margin: 2,
         fontFamily: 'Roboto-Bold',
     },
     buttonText: {
-        color: COLORS.textLight,
+        color: COLORS.purpleLighter,
         fontSize: 30,
         textAlign: 'center',
         fontFamily: 'Roboto-Bold',
@@ -68,6 +64,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: COLORS.purpleSoft,
         marginTop: 20,
         padding: 10,
+        justifyContent: 'center',
     },
     input: {
         borderColor: COLORS.purpleDark,
