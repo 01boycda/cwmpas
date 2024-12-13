@@ -66,6 +66,12 @@ export const globalStyles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
     },
+    textBox: {
+        borderRadius: 10,
+        backgroundColor: COLORS.textContainer,
+        padding: 10,
+        marginTop: 10,
+    },
     input: {
         borderColor: COLORS.purpleDark,
         borderWidth: 4,

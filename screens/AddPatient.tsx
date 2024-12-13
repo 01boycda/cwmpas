@@ -6,8 +6,8 @@ import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
 const AddPatient = (props: any) => {
     const nav = props.navigation;
 
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
 
     return (
         <View style={globalStyles.pageContainer}>

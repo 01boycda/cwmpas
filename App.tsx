@@ -1,16 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import Navigator from './Navigator';
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import Navigator from "./Navigator";
 
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
-import { COLORS } from './setters/styles';
+import { COLORS } from "./setters/styles";
 
 const App = () => {
   const [loaded, error] = useFonts({
-    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
 
   useEffect(() => {

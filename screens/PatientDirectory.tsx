@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
-import { globalStyles, COLORS, FONTSTYLES } from '../setters/styles';
-import { Patient, ScreenNavigationProp } from '../setters/types';
+import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
+import { Patient, ScreenNavigationProp } from "../setters/types";
 
 
 const PatientDirectory: React.FC = () => {
     const nav = useNavigation<ScreenNavigationProp>();
 
     const [patients, setPatients] = useState<Patient[]>([
-        { id: '0', firstName: 'John', lastName: 'Doe', level: 1, },
-        { id: '1', firstName: 'Jane', lastName: 'Doe', level: 2, },
-        { id: '2', firstName: 'David', lastName: 'Jackson', level: 3, },
+        { id: "0", firstName: "John", lastName: "Doe", level: "Prompting", },
+        { id: "1", firstName: "Jane", lastName: "Doe", level: "Some Support", },
+        { id: "2", firstName: "David", lastName: "Jackson", level: "Step-by-Step Guidance", },
     ])
 
     useFocusEffect(() => {
-        console.log('Getting patients list');
+        console.log("Getting patients list");
     });
 
     return (
@@ -35,7 +35,7 @@ const PatientDirectory: React.FC = () => {
                             style={styles.patientButton}
                             onPress={() => nav.navigate("PatientProfile", { patient: patient })}>
                             <Text style={FONTSTYLES.buttonText}>{patient.firstName} {patient.lastName}</Text>
-                            <Text style={[FONTSTYLES.lightText, { textAlign: 'center' }]}>Patient Level: {patient.level}</Text>
+                            <Text style={[FONTSTYLES.lightText, { textAlign: "center" }]}>{patient.level}</Text>
                         </TouchableOpacity>
                     )
                 }) : <Text>No Patients Found</Text>}
