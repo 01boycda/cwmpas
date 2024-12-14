@@ -49,10 +49,10 @@ const Navigator: React.FC = () => {
                     component={PatientProfile}
                     options={({ route }: { route: any }) => {
                         return {
+                            headerTitle: `${route.params.patient.firstName} ${route.params.patient.lastName}`,
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
-                            headerTitle: `${route.params.patient.firstName} ${route.params.patient.lastName}`,
                         };
                     }}
                 />
@@ -73,7 +73,7 @@ const Navigator: React.FC = () => {
                     component={ActivityPage}
                     options={({ route }: { route: any }) => {
                         return {
-                            headerTitle: "ACTIVITY",
+                            headerTitle: `${route.params.activityName}`,
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,

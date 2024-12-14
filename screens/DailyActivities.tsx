@@ -23,25 +23,25 @@ const DailyActivities: React.FC = () => {
 
             <TouchableOpacity
                 style={[globalStyles.button, { flex: 1 }]}
-                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Cooking" })}>
+                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Dressing" })}>
                 <Text style={FONTSTYLES.buttonText}>Dressing</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={[globalStyles.button, { flex: 1 }]}
-                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Cooking" })}>
+                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Eating" })}>
                 <Text style={FONTSTYLES.buttonText}>Eating</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={[globalStyles.button, { flex: 1 }]}
-                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Cooking" })}>
+                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Household Chores" })}>
                 <Text style={FONTSTYLES.buttonText}>Household Chores</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={[globalStyles.button, { flex: 1 }]}
-                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Cooking" })}>
+                onPress={() => navigation.navigate("ActivityPage", { patient: patient, activityName: "Washing" })}>
                 <Text style={FONTSTYLES.buttonText}>Washing</Text>
             </TouchableOpacity>
         </View>
