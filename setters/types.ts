@@ -9,20 +9,12 @@ export type Patient = {
 }
 
 export type Activity = {
-    activityName: string,
-    activityCategory: string,
-    activityLevel: "Prompting" | "Some Support" | "Step-by-Step Guidance" | "Full Assistance",
-    section1: string,
-    section2: string,
-    section3: string,
-    section4: string,
-    section5: string,
-    section6: string,
-    section7: string,
-    section8: string,
-    section9: string,
-    section10: string,
-    section11: string,
+    "activityName": string,
+    "activityCategory": string,
+    "Prompting": string[],
+    "Some Support": string[],
+    "Step-by-Step Guidance": string[],
+    "Full Assistance": string[],
 }
 
 // List of screens that are allowed

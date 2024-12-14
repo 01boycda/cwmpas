@@ -3,44 +3,80 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 import { FontAwesome } from "@expo/vector-icons";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
 import { Activity, ActivityRouteProp, ScreenNavigationProp } from "../setters/types";
 import { ProfileButton } from "../components/HeaderButtons";
-import { getActivity } from "../services/getActivity";
 
 const ActivityPage: React.FC = (props: any) => {
+    // Navigation settings
     const route = useRoute<ActivityRouteProp>();
     const navigation = useNavigation<ScreenNavigationProp>();
     const patient = route.params.patient;
-    const activityName = route.params.activityName;
 
-    const[activity, setActivity] = useState<Activity | null>(null);
+    // Load activity data from Json
+    const customData = require('../data/activities.json');
+    const activity = customData[route.params.activityName];
 
-    useLayoutEffect(() => {
-        getActivity(activityName, patient.level);
-    }, [activity]);
+    // Dropdown variables
+    const [instructionNum, setInstructionNum] = useState<number>(0);
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const [items, setItems] = useState([
+        { label: "What I Can Do", value: 0 },
+        { label: "What I Need Help With", value: 1 },
+        { label: "How to Prepare the Space", value: 2 },
+        { label: "How to Support Me", value: 3 },
+        { label: "Step-by-Step Instructions", value: 4 },
+        { label: "Sensory Preferences", value: 5 },
+        { label: "Managing Sensory Overload", value: 6 },
+        { label: "How to Communicate with Me", value: 7 },
+        { label: "Encouraging Me", value: 8 },
+        { label: "Ending the Activity", value: 9 },
+        { label: "What Comes Next", value: 10 }
+    ]);
 
-    // Update contents
+    // Instruction handlers
+    const nextInstruction = (dir: "up" | "down") => {
+        let num = instructionNum;
+        dir === "up" ? num = num + 1 : num = num - 1;
+        handleInstructionNum(num);
+    }
 
-    // 
+    const handleInstructionNum = (num: number) => {
+        if (num > 10 || num < 0) num = (num + 11) % 11;
+        setInstructionNum(num);
+    }
 
     return (
         <View style={globalStyles.pageContainer}>
-            <TouchableOpacity style={globalStyles.button}>
-                <Text style={FONTSTYLES.buttonText}>DROPDOWN PLACEHOLDER</Text>
-            </TouchableOpacity>
+            <DropDownPicker
+                style={globalStyles.dropdown}
+                textStyle={FONTSTYLES.dropdownText}
+                open={openDropdown}
+                value={instructionNum}
+                items={items}
+                setOpen={setOpenDropdown}
+                setValue={setInstructionNum}
+                setItems={setItems}
+                placeholder={"What I Can Do"}
+            />
+
             <ScrollView style={globalStyles.textBox}>
-                <Text style={FONTSTYLES.darkText}>This is where the seciont description goes</Text>
+                <Text style={FONTSTYLES.textBox}>{activity.Prompting[instructionNum]}</Text>
             </ScrollView>
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={[globalStyles.button, { flex: 1 }]}>
+
+            <View style={ styles.buttonsContainer }>
+                <TouchableOpacity style={styles.arrowButton}
+                    onPress={() => nextInstruction("down")} >
                     <FontAwesome name="arrow-left" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
-                <TouchableOpacity style={[globalStyles.button, { flex: 1 }]}>
+                <TouchableOpacity style={ styles.arrowButton }>
                     <FontAwesome name="pencil-square-o" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
-                <TouchableOpacity style={[globalStyles.button, { flex: 1 }]}>
+                <TouchableOpacity
+                    style={styles.arrowButton}
+                    onPress={() => nextInstruction("up")} >
                     <FontAwesome name="arrow-right" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
             </View>
@@ -49,3 +85,22 @@ const ActivityPage: React.FC = (props: any) => {
 }
 
 export default ActivityPage;
+
+export const styles = StyleSheet.create({
+    buttonsContainer: {
+        height: '17%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    arrowButton: {
+        aspectRatio: 1,
+        borderColor: COLORS.purpleDark,
+        borderWidth: 4,
+        borderRadius: 10,
+        backgroundColor: COLORS.purpleSoft,
+
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+})

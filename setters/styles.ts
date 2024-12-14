@@ -18,17 +18,25 @@ export const FONTSTYLES = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
     },
-    darkText: {
+    textBox: {
         color: COLORS.black,
-        fontSize: 20,
+        fontSize: 24,
         fontFamily: 'Roboto-Bold',
+        marginBottom: 20,
     },
     pageHeaderText: {
         color: COLORS.purpleLighter,
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: '300',
         margin: 2,
         fontFamily: 'Roboto-Bold',
+    },
+    subheaderText: {
+        color: COLORS.purpleDark,
+        fontSize: 28,
+        fontWeight: '200',
+        fontFamily: 'Roboto-Bold',
+        marginBottom: 10,
     },
     buttonText: {
         color: COLORS.purpleLighter,
@@ -36,9 +44,14 @@ export const FONTSTYLES = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Roboto-Bold',
     },
-    inpuerHeaderText: {
+    inputHeaderText: {
         color: COLORS.purpleDark,
         fontSize: 25,
+        fontFamily: 'Roboto-Bold',
+    },
+    dropdownText: {
+        color: COLORS.purpleDark,
+        fontSize: 20,
         fontFamily: 'Roboto-Bold',
     }
 })
@@ -62,15 +75,17 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 10,
         backgroundColor: COLORS.purpleSoft,
-        marginTop: 20,
+        marginTop: 6,
         padding: 10,
+        alignItems: 'center',
         justifyContent: 'center',
     },
     textBox: {
-        borderRadius: 10,
         backgroundColor: COLORS.textContainer,
+        borderColor: COLORS.purpleDark,
+        borderRadius: 10,
+        borderWidth: 4,
         padding: 10,
-        marginTop: 10,
     },
     input: {
         borderColor: COLORS.purpleDark,
@@ -84,5 +99,14 @@ export const globalStyles = StyleSheet.create({
         fontSize: 30,
         fontFamily: 'Roboto-Bold',
         textAlign: 'center',
-      },
+    },
+    dropdown: {
+        borderColor: COLORS.purpleDark,
+        borderWidth: 4,
+        borderRadius: 10,
+
+        backgroundColor: COLORS.purpleLighter,
+        padding: 10,
+        justifyContent: 'center',
+    },
 })

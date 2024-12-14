@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
 import { PatientRouteProp, Patient, ScreenNavigationProp } from "../setters/types";
@@ -20,10 +21,10 @@ const PatientProfile: React.FC = () => {
 
     return (
         <View style={globalStyles.pageContainer}>
-            <Text style={FONTSTYLES.darkText}>{patient.level}</Text>
 
             <ScrollView style={globalStyles.textBox}>
-                <Text style={FONTSTYLES.darkText}>{functionalityDesc[patient.level]}</Text>
+                <Text style={FONTSTYLES.subheaderText}>{patient.level}</Text>
+                <Text style={FONTSTYLES.textBox}>{functionalityDesc[patient.level]}</Text>
             </ScrollView>
 
             <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("DailyActivities", { patient: patient })}>
@@ -32,14 +33,39 @@ const PatientProfile: React.FC = () => {
             <TouchableOpacity style={globalStyles.button}>
                 <Text style={FONTSTYLES.buttonText}>Hobbies & Interests</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={globalStyles.button}>
-                <Text style={FONTSTYLES.buttonText}>Your Story</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={globalStyles.button}>
-                <Text style={FONTSTYLES.buttonText}>About CwmpasOT</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={styles.iconButton}>
+                    <FontAwesome name="user-circle" size={50} color={COLORS.purpleLighter} />
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.iconButton, { marginHorizontal: 6 }]}>
+                    <FontAwesome name="book" size={50} color={COLORS.purpleLighter} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton}>
+                    <FontAwesome name="info-circle" size={60} color={COLORS.purpleLighter} />
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
 export default PatientProfile;
+
+export const styles = StyleSheet.create({
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 6,
+    },
+    iconButton: {
+        flex: 1,
+
+        borderColor: COLORS.purpleDark,
+        borderWidth: 4,
+        borderRadius: 10,
+        backgroundColor: COLORS.purpleSoft,
+
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 5,
+    }
+})
