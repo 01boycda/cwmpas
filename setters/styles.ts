@@ -96,6 +96,7 @@ export const globalStyles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
 
+        color: COLORS.purpleDark,
         fontSize: 30,
         fontFamily: 'Roboto-Bold',
         textAlign: 'center',
