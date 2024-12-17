@@ -1,25 +1,96 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { LinearGradient } from "expo-linear-gradient";
+import * as SQLite from "expo-sqlite";
 
+import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { Patient, ScreenNavigationProp } from "../setters/types";
+import { DATABASE_NAME, Patient, ScreenNavigationProp } from "../setters/types";
+
+// Custom components
+import PatientDirectoryButton from "../components/PatientDirectoryButton";
 
 
 const PatientDirectory: React.FC = () => {
-    const nav = useNavigation<ScreenNavigationProp>();
+    // Navigation
+    const navigation = useNavigation<ScreenNavigationProp>();
+    const [patients, setPatients] = useState<Patient[]>([]);
 
-    const [patients, setPatients] = useState<Patient[]>([
-        { id: "0", firstName: "John", lastName: "Doe", level: "Prompting", },
-        { id: "1", firstName: "Jane", lastName: "Doe", level: "Some Support", },
-        { id: "2", firstName: "David", lastName: "Jackson", level: "Step-by-Step Guidance", },
-    ])
+    // Patient Data
+    const loadPatientData = async () => {
+        try {
+            console.log("Loading...");
+            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
 
-    useFocusEffect(() => {
-        console.log("Getting patients list");
-    });
+            // Create table if not existing
+            await db.execAsync(`
+                CREATE TABLE IF NOT EXISTS patients (
+                    id INTEGER PRIMARY KEY NOT NULL,
+                    firstName TEXT NOT NULL,
+                    middleNames TEXT,
+                    lastName TEXT NOT NULL,
+                    dob TEXT NOT NULL,
+                    joined TEXT NOT NULL,
+                    fScore INTEGER NOT NULL,
+                    fLevel TEXT NOT NULL,
+                    lastAssessment TEXT NOT NULL,
+                    cookingLevel INTEGER NOT NULL,
+                    dressingLevel INTEGER NOT NULL,
+                    eatingLevel INTEGER NOT NULL,
+                    choresLevel INTEGER NOT NULL,
+                    washingLevel INTEGER NOT NULL,
+                    readingLevel INTEGER NOT NULL,
+                    communicationLevel INTEGER NOT NULL,
+                    socialisingLevel INTEGER NOT NULL,
+                    leisureLevel INTEGER NOT NULL,
+                    physicalLevel INTEGER NOT NULL,
+                    cognitiveLevel INTEGER NOT NULL);
+                `);
+
+
+            const allRows = await db.getAllAsync('SELECT * FROM patients') as Patient[];
+            const newPatientList: Patient[] = allRows.map((row) => ({
+                id: row.id,
+                firstName: row.firstName,
+                middleNames: row.firstName,
+                lastName: row.lastName,
+                dob: row.dob,
+                
+                joined: row.joined,
+                fScore: row.fScore,
+                fLevel: row.fLevel,
+                lastAssessment: row.lastAssessment,
+
+                cookingLevel: row.cookingLevel,
+                dressingLevel: row.dressingLevel,
+                eatingLevel: row.eatingLevel,
+                choresLevel: row.choresLevel,
+                washingLevel: row.washingLevel,
+                readingLevel: row.readingLevel,
+                communicationLevel: row.communicationLevel,
+                socialisingLevel: row.socialisingLevel,
+                leisureLevel: row.leisureLevel,
+                physicalLevel: row.physicalLevel,
+                cognitiveLevel: row.cognitiveLevel
+            }));
+
+            setPatients(newPatientList);
+            patients.map(p => { console.log(`${p.id}: ${p.firstName} ${p.lastName} loaded`) });
+        } catch (e) {
+            console.log("Failed to get patient data:\n", e)
+        }
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let isActive = true;
+            loadPatientData();
+            return () => {
+                isActive = false;
+            };
+        }, [])
+    );
 
     return (
         <LinearGradient
@@ -27,21 +98,13 @@ const PatientDirectory: React.FC = () => {
             style={globalStyles.pageContainer}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}>
-            <ScrollView style={styles.patientsContainer}>
-                {patients ? patients.map(patient => {
-                    return (
-                        <TouchableOpacity
-                            key={patient.id}
-                            style={styles.patientButton}
-                            onPress={() => nav.navigate("PatientProfile", { patient: patient })}>
-                            <Text style={FONTSTYLES.buttonText}>{patient.firstName} {patient.lastName}</Text>
-                            <Text style={[FONTSTYLES.lightText, { textAlign: "center" }]}>{patient.level}</Text>
-                        </TouchableOpacity>
-                    )
-                }) : <Text>No Patients Found</Text>}
+            <ScrollView style={globalStyles.scrollContainer}>
+                {patients ? patients.sort((a, b) => a.firstName.localeCompare(b.firstName))
+                    .map(patient => { return <PatientDirectoryButton key={patient.id} patient={patient} nav={navigation} /> }) :
+                    <Text>No Patients Found</Text>}
             </ScrollView>
             <View>
-                <TouchableOpacity style={globalStyles.button} onPress={() => nav.navigate("AddPatient")}>
+                <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("AddPatient")}>
                     <Text style={FONTSTYLES.buttonText}>Add Patient</Text>
                 </TouchableOpacity>
             </View>
@@ -51,17 +114,3 @@ const PatientDirectory: React.FC = () => {
 
 export default PatientDirectory;
 
-const styles = StyleSheet.create({
-    patientsContainer: {
-        backgroundColor: COLORS.textContainer,
-        borderRadius: 10,
-    },
-    patientButton: {
-        backgroundColor: COLORS.purpleSoft,
-        borderColor: COLORS.purpleDark,
-        borderWidth: 4,
-        borderRadius: 10,
-        padding: 10,
-        margin: 5,
-    },
-})
