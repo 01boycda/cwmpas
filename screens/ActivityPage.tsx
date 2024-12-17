@@ -62,7 +62,7 @@ const ActivityPage: React.FC = (props: any) => {
                 placeholder={"What I Can Do"}
             />
 
-            <ScrollView style={globalStyles.textBox}>
+            <ScrollView style={globalStyles.scrollContainer}>
                 <Text style={FONTSTYLES.textBox}>{activity.Prompting[instructionNum]}</Text>
             </ScrollView>
 

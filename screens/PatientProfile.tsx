@@ -22,7 +22,7 @@ const PatientProfile: React.FC = () => {
     return (
         <View style={globalStyles.pageContainer}>
 
-            <ScrollView style={globalStyles.textBox}>
+            <ScrollView style={globalStyles.scrollContainer}>
                 <Text style={FONTSTYLES.subheaderText}>{patient.level}</Text>
                 <Text style={FONTSTYLES.textBox}>{functionalityDesc[patient.level]}</Text>
             </ScrollView>
@@ -30,8 +30,8 @@ const PatientProfile: React.FC = () => {
             <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("DailyActivities", { patient: patient })}>
                 <Text style={FONTSTYLES.buttonText}>Daily Activities</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={globalStyles.button}>
-                <Text style={FONTSTYLES.buttonText}>Hobbies & Interests</Text>
+            <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Hobbies", { patient: patient })}>
+                <Text style={FONTSTYLES.buttonText}>Hobbies</Text>
             </TouchableOpacity>
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.iconButton}>

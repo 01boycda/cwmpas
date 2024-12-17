@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.x01boycda.cwmpas"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,20 +32,12 @@
           "android": {
             "datePicker": {
               "colorAccent": {
-                "light": "#FF5722"
+                "light": "#FF5722",
+                "dark": "#383838"
               },
               "textColorPrimary": {
-                "light": "#FF5722"
-              }
-            },
-            "timePicker": {
-              "background": {
-                "light": "#FF5722",
-                "dark": "#383838"
-              },
-              "numbersBackgroundColor": {
-                "light": "#FF5722",
-                "dark": "#383838"
+                "light": "#49225B",
+                "dark": "#49225B"
               }
             }
           }

@@ -3,16 +3,22 @@ import { Button, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, Touchabl
 import { NavigationContainer, useRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import PatientDirectory from "./screens/PatientDirectory";
-import PatientProfile from "./screens/PatientProfile";
-import AddPatient from "./screens/AddPatient";
-import DailyActivities from "./screens/DailyActivities";
-import ActivityPage from "./screens/ActivityPage";
-
-import { ProfileButton } from "./components/HeaderButtons";
-
 import { COLORS, FONTSTYLES, globalStyles } from "./setters/styles";
 import { Patient, RootStackParamList } from "./setters/types";
+
+// Screens
+import PatientDirectory from "./screens/PatientDirectory";
+import AddPatient from "./screens/AddPatient";
+import FunctionalityTest from "./screens/FunctionalityTest";
+import PatientProfile from "./screens/PatientProfile";
+import DailyActivities from "./screens/DailyActivities";
+import Hobbies from "./screens/Hobbies";
+import ActivityPage from "./screens/ActivityPage";
+
+// Custom Components
+import { BackButton, ProfileButton } from "./components/HeaderButtons";
+
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Navigator: React.FC = () => {
@@ -41,6 +47,20 @@ const Navigator: React.FC = () => {
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
+                        };
+                    }}
+                />
+                <Stack.Screen
+                    name={"FunctionalityTest"}
+                    component={FunctionalityTest}
+                    options={({ route }: { route: any }) => {
+                        return {
+                            headerTitle: "Functionality",
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
                         };
                     }}
                 />
@@ -49,10 +69,11 @@ const Navigator: React.FC = () => {
                     component={PatientProfile}
                     options={({ route }: { route: any }) => {
                         return {
-                            headerTitle: `${route.params.patient.firstName} ${route.params.patient.lastName}`,
+                            headerTitle: `${route.params.patient.firstName} ${route.params.patient.lastName[0]}`,
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
                         };
                     }}
                 />
@@ -61,10 +82,24 @@ const Navigator: React.FC = () => {
                     component={DailyActivities}
                     options={({ }) => {
                         return {
-                            headerTitle: "Daily Activities",
+                            headerTitle: "Daily",
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
+                        };
+                    }}
+                />
+                <Stack.Screen
+                    name={"Hobbies"}
+                    component={Hobbies}
+                    options={({ }) => {
+                        return {
+                            headerTitle: "Hobbies",
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
                         };
                     }}
                 />
@@ -78,6 +113,7 @@ const Navigator: React.FC = () => {
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
                             headerRight: () => (<ProfileButton patient={route.params.patient} />),
+                            headerLeft: () => (<BackButton />),
                         };
                     }}
                 />
