@@ -22,7 +22,17 @@ export const HomeButton: React.FC = () => {
 
     return (
         <TouchableOpacity style={styles.headerButtonContainer} onPress={() => navigation.popToTop()}>
-            <AntDesign name='home' size={40} color={COLORS.purpleLighter} />
+            <AntDesign name="home" size={40} color={COLORS.purpleLighter} />
+        </TouchableOpacity>
+    )
+}
+
+export const HomeButtonArrow: React.FC = () => {
+    const navigation = useNavigation<ScreenNavigationProp>();
+
+    return (
+        <TouchableOpacity style={styles.headerButtonContainer} onPress={() => navigation.popToTop()}>
+            <AntDesign name="left" size={40} color={COLORS.purpleLighter} />
         </TouchableOpacity>
     )
 }

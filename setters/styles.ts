@@ -8,6 +8,11 @@ export const COLORS = {
     purpleSoft: '#674A7F',
     textContainer: '#BDAFA6',
 
+    redStrong: '#DA2528',
+    redSoft: '#E25050',
+
+    warning: '#D3BA2C',
+
     black: '#0B0B0B',
     white: '#F0F2F3',
 }
@@ -33,10 +38,11 @@ export const FONTSTYLES = StyleSheet.create({
     },
     subheaderText: {
         color: COLORS.purpleDark,
-        fontSize: 28,
+        fontSize: 34,
         fontWeight: '200',
         fontFamily: 'Roboto-Bold',
         marginBottom: 10,
+        textAlign: "center",
     },
     buttonText: {
         color: COLORS.purpleLighter,
@@ -53,10 +59,19 @@ export const FONTSTYLES = StyleSheet.create({
         color: COLORS.purpleDark,
         fontSize: 20,
         fontFamily: 'Roboto-Bold',
-    }
+    },
+    datePickerButtonText: {
+        fontSize: 20,
+        fontFamily: 'Roboto-Bold',
+    },
 })
 
 export const globalStyles = StyleSheet.create({
+    centerContent: {
+        flex: 1,
+        alignContent: "center",
+        justifyContent: "center",
+    },
     pageContainer: {
         flex: 1,
         alignItems: 'stretch',
@@ -80,22 +95,25 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    buttonSelectd: {
+        backgroundColor: COLORS.purpleStrong,
+    },
+    buttonDanger: {
+        backgroundColor: COLORS.redStrong,
+        borderColor: COLORS.redSoft,
+    },
     buttonDisabled: {
         borderColor: COLORS.purpleLighter,
-        borderWidth: 4,
-        borderRadius: 10,
         backgroundColor: COLORS.purpleLight,
-        marginBottom: 6,
-        padding: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     scrollContainer: {
+        flexGrow: 1,
         backgroundColor: COLORS.textContainer,
         borderColor: COLORS.purpleDark,
         borderRadius: 10,
         borderWidth: 4,
         padding: 10,
+        marginBottom: 6,
     },
     input: {
         borderColor: COLORS.purpleDark,
@@ -117,7 +135,47 @@ export const globalStyles = StyleSheet.create({
         borderRadius: 10,
 
         backgroundColor: COLORS.purpleLighter,
+        marginBottom: 6,
         padding: 10,
         justifyContent: 'center',
     },
+    alertMessageContainer: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+
+        backgroundColor: COLORS.purpleLight,
+        borderColor: COLORS.purpleDark,
+        borderRadius: 10,
+        borderWidth: 4,
+        padding: 16,
+        position: "absolute",
+        alignSelf: "center",
+        bottom: 16,
+    },
+    // Date Time Picker
+    datePicker: {
+        height: 120,
+    },
+    datePickerContainer: {
+        backgroundColor: COLORS.purpleLight,
+        borderColor: COLORS.purpleDark,
+        borderRadius: 10,
+        borderWidth: 4,
+        position: "absolute",
+        alignSelf: "center",
+        marginTop: 20,
+    },
+    datePickerButton: {
+        backgroundColor: COLORS.purpleLighter,
+        borderRadius: 25,
+        height: 50,
+        marginBottom: 20,
+        padding: 14,
+    }
 })

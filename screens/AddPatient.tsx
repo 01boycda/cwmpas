@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
@@ -34,7 +34,7 @@ const AddPatient = () => {
 
             if (Platform.OS === "android") {
                 toggleDatePicker();
-                setDob(selectedDate.toDateString());
+                setDob(selectedDate.toLocaleDateString());
             }
         } else {
             toggleDatePicker();
@@ -42,7 +42,7 @@ const AddPatient = () => {
     };
 
     const confirmIOSDate = () => {
-        setDob(date.toDateString());
+        setDob(date.toLocaleDateString());
         toggleDatePicker();
     }
 
@@ -51,9 +51,9 @@ const AddPatient = () => {
     const addPatient = async () => {
         console.log("Opening DB");
         const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
-        
-        let joined = new Date().toDateString(); 
-        let lastAssessment = new Date(0).toDateString(); 
+
+        let joined = new Date().toLocaleDateString();
+        let lastAssessment = new Date(0).toLocaleDateString();
         console.log("Joined:", joined, "Last Assessment:", lastAssessment);
 
         let updatedDB = await db.runAsync(`INSERT INTO patients (firstName, middleNames, lastName, dob, joined, fScore, fLevel, lastAssessment, cookingLevel, dressingLevel, eatingLevel, choresLevel, washingLevel, readingLevel, communicationLevel, socialisingLevel, leisureLevel, physicalLevel, cognitiveLevel) VALUES ('${firstName}', '${middleNames}', '${lastName}', '${dob}', '${joined}', 0, 'Finish Assessment', '${lastAssessment}', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);`);
@@ -66,10 +66,10 @@ const AddPatient = () => {
             lastName: lastName,
             dob: dob,
 
-            joined: new Date().toDateString(),
+            joined: new Date().toLocaleDateString(),
             fScore: 0,
             fLevel: "Finish Assessment",
-            lastAssessment: new Date(0).toDateString(),
+            lastAssessment: new Date(0).toLocaleDateString(),
 
             cookingLevel: 0,
             dressingLevel: 0,
@@ -87,111 +87,87 @@ const AddPatient = () => {
         navigation.navigate("FunctionalityTest", { patient: newPatient });
     }
 
-
     return (
-        <View style={globalStyles.pageContainer}>
-            <Text style={FONTSTYLES.inputHeaderText}>First Name</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={setFirstName}
-                placeholder="Tap"
-                placeholderTextColor={COLORS.purpleSoft}
-                selectionColor={COLORS.purpleDark}
-            />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={globalStyles.pageContainer}>
+                <Text style={FONTSTYLES.inputHeaderText}>First Name</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setFirstName}
+                    placeholder="Tap"
+                    returnKeyType="done"
+                    placeholderTextColor={COLORS.purpleSoft}
+                    selectionColor={COLORS.purpleDark}
+                />
 
-            <Text style={FONTSTYLES.inputHeaderText}>Middle Names</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={setMiddleNames}
-                placeholder="Tap"
-                placeholderTextColor={COLORS.purpleSoft}
-                cursorColor={COLORS.purpleDark}
-                selectionColor={COLORS.purpleDark}
-            />
+                <Text style={FONTSTYLES.inputHeaderText}>Middle Names</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setMiddleNames}
+                    placeholder="Tap"
+                    returnKeyType="done"
+                    placeholderTextColor={COLORS.purpleSoft}
+                    selectionColor={COLORS.purpleDark}
+                />
 
-            <Text style={FONTSTYLES.inputHeaderText}>Last Name</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={setLastName}
-                placeholder="Tap"
-                placeholderTextColor={COLORS.purpleSoft}
-                cursorColor={COLORS.purpleDark}
-                selectionColor={COLORS.purpleDark}
-            />
+                <Text style={FONTSTYLES.inputHeaderText}>Last Name</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setLastName}
+                    placeholder="Tap"
+                    returnKeyType="done"
+                    placeholderTextColor={COLORS.purpleSoft}
+                    selectionColor={COLORS.purpleDark}
+                />
 
-            <Text style={FONTSTYLES.inputHeaderText}>Date of Birth</Text>
-            {!showPicker && (
-                <Pressable onPress={toggleDatePicker}>
-                    <TextInput
-                        style={globalStyles.input}
-                        placeholder="Tap"
-                        value={dob}
-                        placeholderTextColor={COLORS.purpleSoft}
-                        editable={false}
-                        onPressIn={toggleDatePicker}
-                    />
-                </Pressable>
-            )}
-            {showPicker && (
-                <View style={styles.datePickerContainer}>
-                    <DateTimePicker
-                        mode="date"
-                        display="spinner"
-                        value={date}
-                        onChange={onChange}
-                        textColor={COLORS.purpleDark}
-                        style={styles.datePicker}
-                    />
-                    {Platform.OS === "ios" && (
-                        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                            <TouchableOpacity style={styles.datePickerButton} onPress={toggleDatePicker}>
-                                <Text style={[styles.datePickerButtonText, { color: COLORS.purpleSoft }]}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.datePickerButton} onPress={confirmIOSDate}>
-                                <Text style={[styles.datePickerButtonText, { color: COLORS.purpleStrong }]}>Confirm</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
+                <Text style={FONTSTYLES.inputHeaderText}>Date of Birth</Text>
+                {!showPicker && (
+                    <Pressable onPress={toggleDatePicker}>
+                        <TextInput
+                            style={globalStyles.input}
+                            placeholder="Tap"
+                            value={dob}
+                            placeholderTextColor={COLORS.purpleSoft}
+                            editable={false}
+                            onPressIn={toggleDatePicker}
+                        />
+                    </Pressable>
+                )}
+                {showPicker && (
+                    <View style={globalStyles.datePickerContainer}>
+                        <DateTimePicker
+                            mode="date"
+                            display="spinner"
+                            value={date}
+                            onChange={onChange}
+                            textColor={COLORS.purpleDark}
+                            style={globalStyles.datePicker}
+                        />
+                        {Platform.OS === "ios" && (
+                            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                                <TouchableOpacity style={globalStyles.datePickerButton} onPress={toggleDatePicker}>
+                                    <Text style={[FONTSTYLES.datePickerButtonText, { color: COLORS.purpleSoft }]}>cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={globalStyles.datePickerButton} onPress={confirmIOSDate}>
+                                    <Text style={[FONTSTYLES.datePickerButtonText, { color: COLORS.purpleStrong }]}>done</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
 
+                    </View>
+                )}
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                    <TouchableOpacity
+                        disabled={firstName === "" || lastName === "" || dob === ""}
+                        style={(firstName === "" || lastName === "" || dob === "") ? [globalStyles.button, globalStyles.buttonDisabled] : globalStyles.button}
+                        onPress={addPatient}>
+                        <Text style={FONTSTYLES.buttonText}>Create Profile</Text>
+                    </TouchableOpacity>
                 </View>
-            )}
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <TouchableOpacity
-                    disabled={firstName === "" || lastName === "" || dob === ""}
-                    style={(firstName === "" || lastName === "" || dob === "") ? globalStyles.buttonDisabled : globalStyles.button}
-                    onPress={addPatient}>
-                    <Text style={FONTSTYLES.buttonText}>Start Test</Text>
-                </TouchableOpacity>
             </View>
-        </View>
+        </TouchableWithoutFeedback >
     )
 }
 
 export default AddPatient;
-
-const styles = StyleSheet.create({
-    datePicker: {
-        height: 120,
-    },
-    datePickerContainer: {
-        backgroundColor: COLORS.purpleLight,
-        borderColor: COLORS.purpleDark,
-        borderRadius: 10,
-        borderWidth: 4,
-        position: "absolute",
-        alignSelf: "center",
-        marginTop: 20,
-
-    },
-    datePickerButtonText: {
-        fontSize: 20,
-        fontFamily: 'Roboto-Bold',
-    },
-    datePickerButton: {
-        backgroundColor: COLORS.purpleLighter,
-        borderRadius: 25,
-        height: 50,
-        marginBottom: 20,
-        padding: 14,
-    }
-})
