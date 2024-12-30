@@ -1,10 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { PatientRouteProp, Patient, ScreenNavigationProp } from "../setters/types";
+import { PatientRouteProp, ScreenNavigationProp } from "../setters/types";
 
 const functionalityDesc = {
     "Prompting": "At the \"Prompting\" level, I can usually do many tasks on my own but sometimes need a gentle reminder to get started. I can plan and work towards completing everyday activities like getting dressed, eating, or having a conversation, but I may need help if a problem comes up. I can follow simple instructions and find things in obvious places, but I might struggle with longer directions or searching beyond where I normally look. I do best when things are clear and straightforward, but I can have trouble understanding when something feels unclear or hard to follow.",
@@ -23,24 +23,44 @@ const PatientProfile: React.FC = () => {
         <View style={globalStyles.pageContainer}>
 
             <ScrollView style={globalStyles.scrollContainer}>
-                <Text style={FONTSTYLES.subheaderText}>{patient.level}</Text>
-                <Text style={FONTSTYLES.textBox}>{functionalityDesc[patient.level]}</Text>
+                <Text style={FONTSTYLES.subheaderText}>{patient.fLevel}</Text>
+                <Text style={FONTSTYLES.textBox}>{functionalityDesc[patient.fLevel]}</Text>
             </ScrollView>
 
-            <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("DailyActivities", { patient: patient })}>
-                <Text style={FONTSTYLES.buttonText}>Daily Activities</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("Hobbies", { patient: patient })}>
-                <Text style={FONTSTYLES.buttonText}>Hobbies</Text>
-            </TouchableOpacity>
+            {patient.fLevel === "Finish Assessment" ?
+                <TouchableOpacity
+                    style={globalStyles.button}
+                    onPress={() => navigation.navigate("FunctionalityTest", { patient: patient })}
+                >
+                    <Text style={[FONTSTYLES.buttonText, { color: COLORS.warning }]}>Finish Test</Text>
+                </TouchableOpacity>
+
+                :
+
+                <>
+                    <TouchableOpacity
+                        style={globalStyles.button}
+                        onPress={() => navigation.navigate("DailyActivities", { patient: patient })}
+                    >
+                        <Text style={FONTSTYLES.buttonText}>Daily Activities</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={globalStyles.button}
+                        onPress={() => navigation.navigate("Hobbies", { patient: patient, category: "Favourites" })}
+                    >
+                        <Text style={FONTSTYLES.buttonText}>Hobbies</Text>
+                    </TouchableOpacity>
+                </>
+            }
+
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.iconButton}>
+                <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("PatientInfo", { patient: patient })}>
                     <FontAwesome name="user-circle" size={50} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.iconButton, { marginHorizontal: 6 }]}>
                     <FontAwesome name="book" size={50} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton}>
+                <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("About")}>
                     <FontAwesome name="info-circle" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
             </View>
@@ -54,7 +74,6 @@ export const styles = StyleSheet.create({
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 6,
     },
     iconButton: {
         flex: 1,

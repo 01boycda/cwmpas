@@ -53,10 +53,10 @@ const PatientDirectory: React.FC = () => {
             const newPatientList: Patient[] = allRows.map((row) => ({
                 id: row.id,
                 firstName: row.firstName,
-                middleNames: row.firstName,
+                middleNames: row.middleNames,
                 lastName: row.lastName,
                 dob: row.dob,
-                
+
                 joined: row.joined,
                 fScore: row.fScore,
                 fLevel: row.fLevel,
@@ -76,7 +76,6 @@ const PatientDirectory: React.FC = () => {
             }));
 
             setPatients(newPatientList);
-            patients.map(p => { console.log(`${p.id}: ${p.firstName} ${p.lastName} loaded`) });
         } catch (e) {
             console.log("Failed to get patient data:\n", e)
         }
@@ -98,13 +97,28 @@ const PatientDirectory: React.FC = () => {
             style={globalStyles.pageContainer}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}>
-            <ScrollView style={globalStyles.scrollContainer}>
-                {patients ? patients.sort((a, b) => a.firstName.localeCompare(b.firstName))
-                    .map(patient => { return <PatientDirectoryButton key={patient.id} patient={patient} nav={navigation} /> }) :
-                    <Text>No Patients Found</Text>}
-            </ScrollView>
+            
+            {patients.length > 0 ?
+
+                <ScrollView style={globalStyles.scrollContainer}>
+                    <View style={{ marginBottom: 6 }}>
+                        {patients.sort((a, b) => a.firstName.localeCompare(b.firstName))
+                            .map(patient => {
+                                return <PatientDirectoryButton key={patient.id} patient={patient} nav={navigation} />
+                            })}
+                    </View>
+                </ScrollView>
+
+                :
+
+                <View style={[globalStyles.scrollContainer, { alignContent: "center", justifyContent: 'center' }]}>
+                    <Text style={FONTSTYLES.subheaderText}>Please Add Patient</Text>
+                </View>
+
+            }
+
             <View>
-                <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate("AddPatient")}>
+                <TouchableOpacity style={[globalStyles.button, { marginBottom: 0 }]} onPress={() => navigation.navigate("AddPatient")}>
                     <Text style={FONTSTYLES.buttonText}>Add Patient</Text>
                 </TouchableOpacity>
             </View>

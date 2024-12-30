@@ -1,12 +1,14 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { act, useLayoutEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as SQLite from "expo-sqlite";
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { Activity, ActivityRouteProp, ScreenNavigationProp } from "../setters/types";
+import { Activity, ActivityRouteProp, DATABASE_NAME, ScreenNavigationProp } from "../setters/types";
 import { ProfileButton } from "../components/HeaderButtons";
 
 const ActivityPage: React.FC = (props: any) => {
@@ -18,6 +20,50 @@ const ActivityPage: React.FC = (props: any) => {
     // Load activity data from Json
     const customData = require('../data/activities.json');
     const activity = customData[route.params.activityName];
+
+    // Is favourite
+    const [favourite, setFavourite] = useState<boolean>(false);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <TouchableOpacity
+                    style={{ margin: 20 }}
+                    onPress={activity.activityCategory === "Daily" ?
+                        () => navigation.goBack() :
+                        () => navigation.popTo("Hobbies", { patient: patient, category: favourite ? "Favourites" : activity["activityCategory"]})}>
+                    <AntDesign name="left" size={40} color={COLORS.purpleLighter} />
+                </TouchableOpacity>),
+        });
+    }, [navigation]);
+
+    const checkIfFavourite = async () => {
+        try {
+            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
+            const firstRow: { "activity": string }[] | null = await db.getFirstAsync('SELECT activity FROM hobbies WHERE patient_id = ? AND activity = ?', patient.id, activity.activityName);
+
+            firstRow === null ? setFavourite(false) : setFavourite(true);
+        } catch (e) {
+            console.log("Failed to get patient data:\n", e)
+        }
+    }
+
+    const handleFavourite = async () => {
+        try {
+            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
+
+            if (!favourite) {
+                await db.runAsync(`INSERT INTO hobbies (patient_id, activity) VALUES ('${patient.id}', '${activity.activityName}');`);
+            } else {
+                await db.runAsync('DELETE FROM hobbies WHERE patient_id = $id AND activity = $act', { $id: patient.id, $act: activity.activityName });
+            }
+
+            setFavourite(!favourite);
+            console.log(`${patient.firstName} ${favourite ? "unfavourited" : "favourited"} ${activity.activityName}`);
+        } catch (e) {
+            console.log("Failed to get patient data:\n", e)
+        }
+    }
 
     // Dropdown variables
     const [instructionNum, setInstructionNum] = useState<number>(0);
@@ -48,6 +94,16 @@ const ActivityPage: React.FC = (props: any) => {
         setInstructionNum(num);
     }
 
+    useFocusEffect(
+        React.useCallback(() => {
+            let isActive = true;
+            checkIfFavourite();
+            return () => {
+                isActive = false;
+            };
+        }, [])
+    );
+
     return (
         <View style={globalStyles.pageContainer}>
             <DropDownPicker
@@ -63,17 +119,26 @@ const ActivityPage: React.FC = (props: any) => {
             />
 
             <ScrollView style={globalStyles.scrollContainer}>
-                <Text style={FONTSTYLES.textBox}>{activity.Prompting[instructionNum]}</Text>
+                <Text style={FONTSTYLES.textBox}>{activity[patient.fLevel][instructionNum]}</Text>
             </ScrollView>
 
-            <View style={ styles.buttonsContainer }>
-                <TouchableOpacity style={styles.arrowButton}
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity
+                    style={styles.arrowButton}
                     onPress={() => nextInstruction("down")} >
                     <FontAwesome name="arrow-left" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
-                <TouchableOpacity style={ styles.arrowButton }>
+                <TouchableOpacity
+                    style={styles.arrowButton}>
                     <FontAwesome name="pencil-square-o" size={60} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
+                {activity.activityCategory !== "Daily" && (
+                    <TouchableOpacity
+                        style={styles.arrowButton}
+                        onPress={handleFavourite} >
+                        <FontAwesome name={favourite ? "star" : "star-o"} size={60} color={COLORS.purpleLighter} />
+                    </TouchableOpacity>
+                )}
                 <TouchableOpacity
                     style={styles.arrowButton}
                     onPress={() => nextInstruction("up")} >
@@ -88,10 +153,8 @@ export default ActivityPage;
 
 export const styles = StyleSheet.create({
     buttonsContainer: {
-        height: '17%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 10,
     },
     arrowButton: {
         aspectRatio: 1,
@@ -99,6 +162,8 @@ export const styles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 10,
         backgroundColor: COLORS.purpleSoft,
+
+        padding: 5,
 
         alignItems: 'center',
         justifyContent: 'center',

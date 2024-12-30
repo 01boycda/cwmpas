@@ -14,9 +14,11 @@ import PatientProfile from "./screens/PatientProfile";
 import DailyActivities from "./screens/DailyActivities";
 import Hobbies from "./screens/Hobbies";
 import ActivityPage from "./screens/ActivityPage";
+import PatientInfo from "./screens/PatientInfo";
+import About from "./screens/About";
 
 // Custom Components
-import { BackButton, ProfileButton } from "./components/HeaderButtons";
+import { BackButton, HomeButton, HomeButtonArrow, ProfileButton } from "./components/HeaderButtons";
 
 
 
@@ -54,13 +56,13 @@ const Navigator: React.FC = () => {
                 <Stack.Screen
                     name={"FunctionalityTest"}
                     component={FunctionalityTest}
-                    options={({ route }: { route: any }) => {
+                    options={({ }) => {
                         return {
-                            headerTitle: "Functionality",
+                            headerTitle: "Questionnaire",
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
-                            headerLeft: () => (<BackButton />),
+                            headerLeft: () => (<HomeButtonArrow />),
                         };
                     }}
                 />
@@ -73,7 +75,7 @@ const Navigator: React.FC = () => {
                             headerStyle: globalStyles.headerContainer,
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
-                            headerLeft: () => (<BackButton />),
+                            headerLeft: () => (<HomeButton />),
                         };
                     }}
                 />
@@ -113,6 +115,31 @@ const Navigator: React.FC = () => {
                             headerTintColor: COLORS.purpleLight,
                             headerTitleStyle: FONTSTYLES.pageHeaderText,
                             headerRight: () => (<ProfileButton patient={route.params.patient} />),
+                        };
+                    }}
+                />
+                <Stack.Screen
+                    name={"PatientInfo"}
+                    component={PatientInfo}
+                    options={({ }) => {
+                        return {
+                            headerTitle: "Patient Info",
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
+                            headerLeft: () => (<BackButton />),
+                        };
+                    }}
+                />
+                <Stack.Screen
+                    name={"About"}
+                    component={About}
+                    options={({ }) => {
+                        return {
+                            headerTitle: "About Us",
+                            headerStyle: globalStyles.headerContainer,
+                            headerTintColor: COLORS.purpleLight,
+                            headerTitleStyle: FONTSTYLES.pageHeaderText,
                             headerLeft: () => (<BackButton />),
                         };
                     }}
