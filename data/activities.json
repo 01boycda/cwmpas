@@ -2,6 +2,7 @@
     "Cooking": {
         "activityName": "Cooking",
         "activityCategory": "Daily",
+        
         "Prompting": [
             "I can plan and decide what to cook, and I am able to work towards preparing a meal if I follow a familiar routine. I can find ingredients and equipment if they are in obvious places, and I can follow a simple written recipe.",
             "I may need a gentle reminder to start cooking or to continue if I get distracted. I might struggle to solve problems that arise, such as missing ingredients or equipment, and I may have difficulty understanding longer or more complex instructions.",
@@ -58,6 +59,7 @@
     "Dressing": {
         "activityName": "Dressing",
         "activityCategory": "Daily",
+        
         "Prompting": [
             "I can plan and decide what to wear and work towards completing the dressing process. I can find clothing, jewellery, and grooming items like a comb or make-up if they are in obvious places.",
             "I might need a gentle reminder to get started with dressing. I may struggle with solving problems, such as understanding which way round clothes should go or locating less obvious items. I might have difficulty understanding longer instructions or finding things outside their usual places.",
@@ -114,6 +116,7 @@
     "Eating": {
         "activityName": "Eating",
         "activityCategory": "Daily",
+        
         "Prompting": [
             "I can plan and decide what to eat or drink. I am able to work towards setting the table, and enjoying dining. I can find cutlery if they are in their usual, obvious places.",
             "I may need a gentle reminder to start eating a meal. I might struggle to solve problems if something unexpected happens, like missing cutlery.",
@@ -170,6 +173,7 @@
     "Household Chores": {
         "activityName": "Household Chores",
         "activityCategory": "Daily",
+        
         "Prompting": [
             "I can plan and carry out simple household chores, such as dusting, folding laundry, or tidying up, especially when I follow a familiar routine. I can find cleaning supplies or tools if they are in obvious places, and I can follow straightforward instructions to complete tasks.",
             "I may need a gentle reminder to start a household task or to continue if I get distracted. I might struggle to solve problems that arise, such as finding a misplaced item or knowing where to put things. I may also have difficulty understanding longer or more complex instructions.",
@@ -226,6 +230,7 @@
     "Washing": {
         "activityName": "Washing",
         "activityCategory": "Daily",
+        
         "Prompting": [
             "I am capable of exploring different ways to bathe, shower, or wash. I can work through the steps to complete my washing routine if I'm gently reminded. I can look for toiletries and towels in their usual places.",
             "I may need a prompt or suggestion to start washing, showering, or bathing. I might struggle to solve problems, such as an overflowing bath or a misplaced towel. Complex instructions can confuse me, and I may not search beyond familiar spots for items like soap or towels.",
@@ -282,6 +287,7 @@
     "Boardgames": {
         "activityName": "Boardgames",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy playing very familiar board games, especially in a familiar environment. I may not focus on the end result but will enjoy the process of playing. I can manage more complex games if they are broken down into 2-3 step stages.",
             "I may not recognise when the game is completed or understand the rules fully. I might also need reminders about what to do next during the game.",
@@ -338,6 +344,7 @@
     "Cards": {
         "activityName": "Cards",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy playing familiar card games, especially in a relaxed, familiar setting. I may not focus on winning but will enjoy the act of playing and interacting with others. I can manage card games if they are broken down into simple stages.",
             "I may not remember the rules or recognise when the game is completed. I might need help understanding what to do next and may need reminders throughout the game.",
@@ -394,6 +401,7 @@
     "Crosswords": {
         "activityName": "Crosswords",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy working on familiar crossword puzzles, especially when the environment is comfortable and familiar. I may not focus on completing the puzzle but will enjoy the process of thinking and engaging with the words. I can handle more complex puzzles if they are broken down into smaller parts.",
             "I may need help understanding clues or recognising when the puzzle is finished. I might also need prompts to stay focused on the task and guidance to figure out difficult answers.",
@@ -450,6 +458,7 @@
     "Puzzles": {
         "activityName": "Puzzles",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy working on familiar puzzles, especially in a calm and familiar environment. I may not focus on completing the puzzle but will enjoy the process of fitting pieces together and engaging with the activity. I can handle more complex puzzles if they are broken down into smaller, manageable parts.",
             "I may need help finding or recognising pieces that fit together, and I might need reminders about where I was working in the puzzle. I may also need prompts to stay focused on the task and to recognise when the puzzle is finished.",
@@ -506,6 +515,7 @@
     "Quizzes": {
         "activityName": "Quizzes",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy participating in quizzes, especially when the questions are familiar or related to topics I'm interested in. I may not focus on winning or getting every answer right but will enjoy the process of thinking and engaging with the questions. I can handle more complex questions if they are broken down into simpler parts or multiple-choice options.",
             "I may need help understanding some questions or recognising when the quiz is finished. I might also need prompts to stay focused on the task and assistance with answering difficult questions.",
@@ -562,6 +572,7 @@
     "Reading": {
         "activityName": "Reading",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy reading familiar books, magazines, or newspapers, especially in a comfortable and familiar setting. I may not focus on finishing the material but will enjoy the process of engaging with the text. I can follow the story or content if it is broken down into shorter, manageable sections.",
             "I may need help turning pages, understanding some content, or recognising when I've finished a section. I might also need prompts to stay focused on the text and assistance with any difficult words or concepts.",
@@ -618,6 +629,7 @@
     "Wordsearches": {
         "activityName": "Wordsearches",
         "activityCategory": "Cognitive Activities",
+        
         "Prompting": [
             "I can enjoy working on familiar wordsearch puzzles, especially in a comfortable and familiar environment. I may not focus on completing the puzzle but will enjoy the process of searching for words and engaging with the activity. I can handle more complex wordsearches if they are broken down into smaller sections.",
             "I may need help finding words or recognising when the wordsearch is complete. I might also need prompts to stay focused on the task and assistance with difficult words or sections.",
@@ -674,6 +686,7 @@
     "Painting": {
         "activityName": "Painting",
         "activityCategory": "Creative Activities",
+        
         "Prompting": [
             "I can enjoy painting, especially in a relaxed and familiar environment. I may not focus on creating a finished piece but will enjoy the process of using colours and engaging with the activity. I can handle more complex painting projects if they are broken down into smaller, manageable steps.",
             "I may need help setting up the painting materials, mixing colours, or deciding when the painting is complete. I might also need prompts to stay focused on the task and assistance with handling brushes or other tools.",
@@ -730,6 +743,7 @@
     "Colouring": {
         "activityName": "Colouring",
         "activityCategory": "Creative Activities",
+        
         "Prompting": [
             "I can enjoy colouring, especially in a calm and familiar environment. I may not focus on completing a picture but will enjoy the process of using colours and engaging with the activity. I can handle more complex colouring tasks if they are broken down into smaller, manageable sections.",
             "I may need help selecting colours, staying within the lines, or deciding when the picture is complete. I might also need prompts to stay focused on the task and assistance with handling the colouring tools.",
@@ -786,6 +800,7 @@
     "Drawing": {
         "activityName": "Drawing",
         "activityCategory": "Creative Activities",
+        
         "Prompting": [
             "I may enjoy drawing, especially in a familiar and relaxed environment. I may not focus on creating a finished piece but will enjoy the process of using pencils or markers and engaging with the activity. I can handle more complex drawing tasks if they are broken down into smaller, manageable sections.",
             "I may need help getting started, choosing what to draw, or deciding when the drawing is complete. I might also need prompts to stay focused on the task and assistance with handling drawing tools.",
@@ -842,6 +857,7 @@
     "Knitting & Crochet": {
         "activityName": "Knitting & Crochet",
         "activityCategory": "Creative Activities",
+        
         "Prompting": [
             "I can enjoy knitting or crocheting, especially in a calm and familiar environment. I may not focus on completing a project but will enjoy the process of working with yarn and using my hands. I can handle more complex patterns if they are broken down into steps.",
             "I may need help getting started, remembering the steps in a pattern, or deciding when to stop. I might also need prompts to stay focused on the task and assistance with handling the knitting needles or crochet hook.",
@@ -898,6 +914,7 @@
     "Creating Photo Album": {
         "activityName": "Creating Photo Album",
         "activityCategory": "Creative Activities",
+        
         "Prompting": [
             "I may enjoy creating a photo album, especially in a familiar and relaxed environment. I may not focus on finishing the album but will enjoy the process of selecting and arranging photos. I can handle more complex tasks if they are broken down into smaller, manageable steps.",
             "I may need help selecting photos, arranging them in the album, or deciding when the album is complete. I might also need prompts to stay focused on the task and assistance with handling the photos and album pages.",
@@ -954,6 +971,7 @@
     "Chatting with Family & Friends": {
         "activityName": "Chatting with Family & Friends",
         "activityCategory": "Engaging with Others",
+        
         "Prompting": [
             "I can enjoy conversations with family and friends, especially in a familiar and comfortable environment. I may not focus on the flow of conversation but will enjoy the process of engaging with others. I can follow simple, familiar topics if the conversation is broken down into smaller, manageable parts.",
             "I may need help starting conversations, staying on topic, or understanding more complex discussions. I might also need prompts to stay engaged and assistance in recognising when the conversation has moved to a new subject.",
@@ -1010,6 +1028,7 @@
     "Group Activities": {
         "activityName": "Group Activities",
         "activityCategory": "Engaging with Others",
+        
         "Prompting": [
             "I can enjoy participating in group activities, especially in a familiar and supportive environment. I may not focus on the goals of the activity but will enjoy the process of being involved with others. I can engage with more complex group activities if they are broken down into smaller, manageable steps.",
             "I may need help understanding the activity's purpose, following along, or recognising when the activity is complete. I might also need prompts to stay engaged and assistance in interacting with other participants.",
@@ -1066,6 +1085,7 @@
     "Pets": {
         "activityName": "Pets",
         "activityCategory": "Engaging with Others",
+        
         "Prompting": [
             "I can enjoy spending time with pets, especially in a familiar and comfortable environment. I may not focus on specific tasks related to pet care but will enjoy the interaction and companionship. ",
             "I may need help understanding how to interact with the pet, recognising the pet's needs, or following through with care routines. I might also need prompts to stay engaged and assistance in ensuring the pet is safe and comfortable.",
@@ -1122,6 +1142,7 @@
     "Reminiscence": {
         "activityName": "Reminiscence",
         "activityCategory": "Engaging with Others",
+        
         "Prompting": [
             "I can enjoy reminiscing about past experiences, especially in a familiar and supportive environment. I may not focus on the details of the memories but will enjoy the process of recalling and sharing stories. I can engage more deeply with reminiscence if it is broken down into smaller, manageable topics or prompts.",
             "I may need help remembering specific events, following the flow of conversation, or recognising when the reminiscence session is complete. I might also need prompts to stay engaged and assistance in connecting past memories with the present.",
@@ -1178,6 +1199,7 @@
     "Listening to Music": {
         "activityName": "Listening to Music",
         "activityCategory": "Music",
+        
         "Prompting": [
             "I can enjoy listening to music, especially in a familiar and comfortable environment. I may not focus on the specific songs or lyrics but will enjoy the experience of hearing the music and engaging with the sounds. I can engage more deeply with music if it is familiar and played in a supportive setting.",
             "I may need help choosing the music, recognising when the listening session is complete, or staying focused on the music. I might also need prompts to engage with the music actively, such as humming along or tapping to the rhythm.",
@@ -1234,6 +1256,7 @@
     "Playing Instruments": {
         "activityName": "Playing Instruments",
         "activityCategory": "Music",
+        
         "Prompting": [
             "I can enjoy playing musical instruments, especially in a familiar and supportive environment. I may not focus on playing specific tunes but will enjoy the process of engaging with the instrument and creating sounds. I can engage more deeply with the instrument if the activity is broken down into smaller, manageable steps.",
             "I may need help choosing an instrument, understanding how to play it, or recognising when the session is complete. I might also need prompts to stay engaged and assistance with handling the instrument correctly.",
@@ -1290,6 +1313,7 @@
     "Singing": {
         "activityName": "Singing",
         "activityCategory": "Music",
+        
         "Prompting": [
             "I can enjoy singing, especially in a familiar and supportive environment. I may not focus on the lyrics or melody but will enjoy the process of using my voice and engaging with the music. I can engage more deeply with singing if the songs are familiar and the activity is broken down into smaller, manageable steps.",
             "I may need help choosing songs, remembering the lyrics, or recognising when the singing session is complete. I might also need prompts to stay engaged and assistance in following the rhythm or melody.",
@@ -1346,6 +1370,7 @@
     "Basketball / Netball": {
         "activityName": "Basketball / Netball",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy simple basketball or netball activities, especially in a familiar and supportive environment. I may not focus on scoring or winning but will enjoy the physical activity and engaging with others. I can engage more deeply with the activity if it is broken down into smaller, manageable steps.",
             "I may need help understanding the rules, following along, or recognising when the activity is complete. I might also need prompts to stay engaged and assistance with handling the ball correctly.",
@@ -1402,6 +1427,7 @@
     "Dancing": {
         "activityName": "Dancing",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy dancing, especially in a familiar and supportive environment. I may not focus on specific steps or routines but will enjoy the movement and rhythm of the music. I can engage more deeply with dancing if it is broken down into simple, manageable movements.",
             "I may need help choosing music, understanding dance steps, or recognising when the session is complete. I might also need prompts to stay engaged and assistance in moving safely.",
@@ -1458,6 +1484,7 @@
     "Football": {
         "activityName": "Football",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy simple football activities, especially in a familiar and supportive environment. I may not focus on scoring or winning but will enjoy the physical activity and engaging with others. I can engage more deeply with the activity if it is broken down into smaller, manageable steps.",
             "I may need help understanding the rules, following along, or recognising when the activity is complete. I might also need prompts to stay engaged and assistance with handling the ball correctly.",
@@ -1514,6 +1541,7 @@
     "Gardening": {
         "activityName": "Gardening",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy simple gardening tasks, especially in a familiar and supportive environment. I may not focus on completing tasks but will enjoy the process of being outdoors and engaging with plants. I can engage more deeply with the activity if it is broken down into smaller, manageable steps.",
             "I may need help understanding gardening tasks, following along, or recognising when the activity is complete. I might also need prompts to stay engaged and assistance with handling gardening tools or plants correctly.",
@@ -1570,6 +1598,7 @@
     "Swimming": {
         "activityName": "Swimming",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy swimming, especially in a familiar and supportive environment. I may not focus on specific strokes or techniques but will enjoy the feeling of being in the water and engaging in gentle movement. I can engage more deeply with swimming if the activity is broken down into smaller, manageable steps.",
             "I may need help understanding swimming techniques, following along, or recognising when the session is complete. I might also need prompts to stay engaged and assistance in moving safely in the water.",
@@ -1626,6 +1655,7 @@
     "Walking": {
         "activityName": "Walking",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy walking, especially in a familiar and supportive environment. I may not focus on the destination but will enjoy the process of moving and being outdoors. I can engage more deeply with walking if the activity is broken down into smaller, manageable steps.",
             "I may need help understanding the route, staying on track, or recognising when the walk is complete. I might also need prompts to stay engaged and assistance in moving safely.",
@@ -1682,6 +1712,7 @@
     "Yoga": {
         "activityName": "Yoga",
         "activityCategory": "Physical Activities",
+        
         "Prompting": [
             "I can enjoy simple yoga exercises, especially in a familiar and supportive environment. I may not focus on perfecting poses but will enjoy the process of moving and stretching my body. I can engage more deeply with yoga if the activity is broken down into smaller, manageable steps.",
             "I may need help understanding the poses, following along, or recognising when the session is complete. I might also need prompts to stay engaged and assistance in moving safely.",
@@ -1738,6 +1769,7 @@
     "Birdwatching": {
         "activityName": "Birdwatching",
         "activityCategory": "Relaxation",
+        
         "Prompting": [
             "I can enjoy birdwatching, especially in a familiar and supportive environment. I may not focus on identifying specific birds but will enjoy the process of observing and being outdoors. I can engage more deeply with birdwatching if the activity is broken down into smaller, manageable steps.",
             "I may need help understanding where to look, staying focused, or recognising when the session is complete. I might also need prompts to stay engaged and assistance in using binoculars or spotting birds.",
@@ -1794,6 +1826,7 @@
     "Breathing Exercises / Meditation": {
         "activityName": "Breathing Exercises / Meditation",
         "activityCategory": "Relaxation",
+        
         "Prompting": [
             "I can enjoy breathing exercises or meditation, especially in a familiar and supportive environment. I may not focus on specific techniques but will enjoy the process of relaxation and calming my mind. I can engage more deeply with the activity if it is broken down into smaller, manageable steps.",
             "I may need help understanding the techniques, following along, or recognising when the session is complete. I might also need prompts to stay engaged and assistance in maintaining a comfortable and relaxed position.",
@@ -1850,6 +1883,7 @@
     "Hand Massaging": {
         "activityName": "Hand Massaging",
         "activityCategory": "Relaxation",
+        
         "Prompting": [
             "I can enjoy hand massaging, especially in a familiar and supportive environment. I may not focus on the technique but will enjoy the tactile sensation and the process of relaxation. I can engage more deeply with hand massaging if the activity is done gently and at a slow pace.",
             "I may need help understanding the process, staying engaged, or recognising when the session is complete. I might also need prompts to relax and assistance in maintaining comfort throughout the massage.",

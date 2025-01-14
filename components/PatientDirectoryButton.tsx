@@ -9,12 +9,14 @@ const PatientDirectoryButton = ({ patient, nav }: { patient: Patient, nav: Scree
         <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
                 style={[styles.patientButton, { flex: 9 }]}
-                onPress={() => nav.navigate("PatientProfile", { patient: patient })}>
+                onPress={() => {
+                    nav.navigate("PatientProfile", { patient: patient })
+                }}>
 
-                <Text style={FONTSTYLES.buttonText}>{patient.firstName} {patient.lastName}</Text>
+                <Text style={styles.nameText}>{patient.firstName} {patient.lastName}</Text>
 
                 <Text style={[
-                    FONTSTYLES.lightText,
+                    styles.functionalityText,
                     { textAlign: "center" },
                     patient.fLevel === "Finish Assessment" && { color: COLORS.warning },
                 ]}>
@@ -29,6 +31,17 @@ const PatientDirectoryButton = ({ patient, nav }: { patient: Patient, nav: Scree
 export default PatientDirectoryButton;
 
 const styles = StyleSheet.create({
+    nameText: {
+        color: COLORS.purpleLighter,
+        fontSize: 36,
+        textAlign: 'center',
+        fontFamily: 'Roboto-Bold',
+    },
+    functionalityText: {
+        color: COLORS.purpleLighter,
+        fontSize: 26,
+        fontFamily: 'Roboto-Bold',
+    },
     patientButton: {
         backgroundColor: COLORS.purpleSoft,
         borderColor: COLORS.purpleDark,

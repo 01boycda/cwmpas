@@ -1,15 +1,21 @@
-import React, { act, useLayoutEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import React, { act, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Button, Dimensions, Keyboard, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useHeaderHeight } from '@react-navigation/elements';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as SQLite from "expo-sqlite";
+import Slider from "@react-native-community/slider";
+import { LinearGradient } from "expo-linear-gradient";
 
+
+import { DATABASE_NAME } from "../setters/constantValues";
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { Activity, ActivityRouteProp, DATABASE_NAME, ScreenNavigationProp } from "../setters/types";
-import { ProfileButton } from "../components/HeaderButtons";
+import { ActivityRouteProp, ScreenNavigationProp } from "../setters/types";
+import { ActivityBackButton } from "../components/HeaderButtons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ActivityPage: React.FC = (props: any) => {
     // Navigation settings
@@ -21,22 +27,55 @@ const ActivityPage: React.FC = (props: any) => {
     const customData = require('../data/activities.json');
     const activity = customData[route.params.activityName];
 
-    // Is favourite
+    // Load activity notes
+    const sectionScrollView = useRef<ScrollView>(null);
+    const [currentNotes, setCurrentNotes] = useState<string>("");
+    const [keyboardVisible, setKeyboardVisible] = useState<boolean>(false);
+
+    const loadNotes = async () => {
+        try {
+            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
+
+            // Create table if not existing
+            await db.execAsync(`
+                        CREATE TABLE IF NOT EXISTS notes (
+                            id INTEGER PRIMARY KEY NOT NULL,
+                            patient_id INTEGER REFERENCES patients(id),
+                            activity TEXT NOT NULL,
+                            section NUMBER NOT NULL,
+                            note TEXT NOT NULL);`
+            );
+            
+            let noteData: { "note": string } | null = await db.getFirstAsync(`SELECT note FROM notes WHERE patient_id = ? AND activity = ? AND section = ?`, patient.id, activity.activityName, sectionNum);
+            
+            console.log(noteData);
+            setCurrentNotes(noteData === null ? "" : noteData.note);
+            console.log("Current notes:", currentNotes);
+        } catch (e) {
+            console.log("Failed to get note data:\n", e)
+        }
+    }
+
+    // Save activity notes
+    const saveNoteData = async (text: string) => {
+        // Update database
+        try {
+            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
+            await db.runAsync('DELETE FROM notes WHERE patient_id = $id AND activity = $act AND section = $section', { $id: patient.id, $act: activity.activityName, $section: sectionNum });
+            await db.runAsync(`INSERT INTO notes (note, patient_id, activity, section) VALUES ('${text}', '${patient.id}', '${activity.activityName}', '${sectionNum}');`);
+        } catch (e) {
+            console.log("Unable to save answer:\n", e)
+        }
+    }
+
+    const backFromNotes = () => {
+        activity.activityCategory === "Daily" ?
+            navigation.goBack() :
+            navigation.popTo("Hobbies", { patient: patient, category: favourite ? "Favourites" : activity["activityCategory"] })
+    }
+
+    // Check if favourited
     const [favourite, setFavourite] = useState<boolean>(false);
-
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <TouchableOpacity
-                    style={{ margin: 20 }}
-                    onPress={activity.activityCategory === "Daily" ?
-                        () => navigation.goBack() :
-                        () => navigation.popTo("Hobbies", { patient: patient, category: favourite ? "Favourites" : activity["activityCategory"]})}>
-                    <AntDesign name="left" size={40} color={COLORS.purpleLighter} />
-                </TouchableOpacity>),
-        });
-    }, [navigation]);
-
     const checkIfFavourite = async () => {
         try {
             const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
@@ -48,27 +87,10 @@ const ActivityPage: React.FC = (props: any) => {
         }
     }
 
-    const handleFavourite = async () => {
-        try {
-            const db = await SQLite.openDatabaseAsync(DATABASE_NAME);
-
-            if (!favourite) {
-                await db.runAsync(`INSERT INTO hobbies (patient_id, activity) VALUES ('${patient.id}', '${activity.activityName}');`);
-            } else {
-                await db.runAsync('DELETE FROM hobbies WHERE patient_id = $id AND activity = $act', { $id: patient.id, $act: activity.activityName });
-            }
-
-            setFavourite(!favourite);
-            console.log(`${patient.firstName} ${favourite ? "unfavourited" : "favourited"} ${activity.activityName}`);
-        } catch (e) {
-            console.log("Failed to get patient data:\n", e)
-        }
-    }
-
     // Dropdown variables
-    const [instructionNum, setInstructionNum] = useState<number>(0);
+    const [sectionNum, setSectionNum] = useState<number>(route.params.section);
     const [openDropdown, setOpenDropdown] = useState(false);
-    const [items, setItems] = useState([
+    const [items, setItems] = useState<{ label: string, value: number }[]>([
         { label: "What I Can Do", value: 0 },
         { label: "What I Need Help With", value: 1 },
         { label: "How to Prepare the Space", value: 2 },
@@ -82,70 +104,175 @@ const ActivityPage: React.FC = (props: any) => {
         { label: "What Comes Next", value: 10 }
     ]);
 
-    // Instruction handlers
-    const nextInstruction = (dir: "up" | "down") => {
-        let num = instructionNum;
-        dir === "up" ? num = num + 1 : num = num - 1;
-        handleInstructionNum(num);
+    // Info Menu
+    const [showInfo, setShowInfo] = useState<boolean>(false);
+    const [infoBox, setInfoBox] = useState<number>(0);
+    const ActivityInfoButton = () => {
+        return (
+            <TouchableOpacity style={{ margin: 20 }} onPress={() => setShowInfo(!showInfo)}>
+                {showInfo ?
+                    <FontAwesome name="close" size={40} color={COLORS.purpleLighter} /> :
+                    <MaterialCommunityIcons name="chat-question-outline" size={40} color={COLORS.purpleLighter} />
+                }
+            </TouchableOpacity>
+        )
     }
 
-    const handleInstructionNum = (num: number) => {
-        if (num > 10 || num < 0) num = (num + 11) % 11;
-        setInstructionNum(num);
-    }
+    useEffect(() => {
+        loadNotes();
+    }, [sectionNum])
+
+    // Setup header buttons
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (<ActivityBackButton patient={patient} activity={activity} favourite={favourite} />),
+            headerRight: () => (<ActivityInfoButton />)
+        });
+        setInfoBox(0);
+    }, [navigation, showInfo]);
+
 
     useFocusEffect(
         React.useCallback(() => {
-            let isActive = true;
-            checkIfFavourite();
+            const keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', () => setKeyboardVisible(true));
+            const keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () => setKeyboardVisible(false));
+
+            // Call functions directly
+
+            // Cleanup on unmount
             return () => {
-                isActive = false;
+                keyboardDidHideListener.remove();
+                keyboardDidShowListener.remove();
             };
-        }, [])
+        }, [checkIfFavourite]) // Include dependencies
     );
 
+
     return (
-        <View style={globalStyles.pageContainer}>
-            <DropDownPicker
-                style={globalStyles.dropdown}
-                textStyle={FONTSTYLES.dropdownText}
-                open={openDropdown}
-                value={instructionNum}
-                items={items}
-                setOpen={setOpenDropdown}
-                setValue={setInstructionNum}
-                setItems={setItems}
-                placeholder={"What I Can Do"}
-            />
+        <LinearGradient
+            style={globalStyles.pageContainer}
+            colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}>
+            {!keyboardVisible && (
+                <DropDownPicker
+                    open={openDropdown}
+                    value={sectionNum}
+                    items={items}
+                    setOpen={setOpenDropdown}
+                    setValue={setSectionNum}
+                    setItems={setItems}
+                    placeholder={"What I Can Do"}
 
-            <ScrollView style={globalStyles.scrollContainer}>
-                <Text style={FONTSTYLES.textBox}>{activity[patient.fLevel][instructionNum]}</Text>
-            </ScrollView>
+                    style={globalStyles.dropdown}
+                    dropDownContainerStyle={globalStyles.dropdownList}
+                    selectedItemContainerStyle={globalStyles.dropdownSelected}
+                    textStyle={FONTSTYLES.dropdownText}
+                    selectedItemLabelStyle={{ color: COLORS.purpleLighter }}
 
-            <View style={styles.buttonsContainer}>
-                <TouchableOpacity
-                    style={styles.arrowButton}
-                    onPress={() => nextInstruction("down")} >
-                    <FontAwesome name="arrow-left" size={60} color={COLORS.purpleLighter} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.arrowButton}>
-                    <FontAwesome name="pencil-square-o" size={60} color={COLORS.purpleLighter} />
-                </TouchableOpacity>
-                {activity.activityCategory !== "Daily" && (
-                    <TouchableOpacity
-                        style={styles.arrowButton}
-                        onPress={handleFavourite} >
-                        <FontAwesome name={favourite ? "star" : "star-o"} size={60} color={COLORS.purpleLighter} />
-                    </TouchableOpacity>
+                    ArrowDownIconComponent={() => <AntDesign name="down" size={30} />}
+                    ArrowUpIconComponent={() => <AntDesign name="up" size={30} />}
+                    showTickIcon={false}
+                />
+            )}
+
+            <View style={{ flex: 1 }}>
+                <ScrollView ref={sectionScrollView} style={globalStyles.scrollContainer}>
+                    <Text style={FONTSTYLES.textBox}>{activity[patient.fLevel][sectionNum]}</Text>
+                    <TextInput
+                        multiline
+                        placeholder="Add additional notes to section..."
+                        defaultValue={currentNotes}
+
+                        // Styles
+                        style={styles.notesInput}
+                        placeholderTextColor={COLORS.textContainerDark}
+                        cursorColor={COLORS.purpleDark}
+                        selectionColor={COLORS.purpleDark}
+
+                        // Functions
+                        onFocus={() => sectionScrollView.current?.scrollToEnd({animated: true})}
+                        onChangeText={text => saveNoteData(text)}
+                    />
+                </ScrollView>
+
+                {keyboardVisible && (
+                    <View style={{ height: 290 }}>
+                        <TouchableOpacity style={globalStyles.button} onPress={Keyboard.dismiss}>
+                            <MaterialCommunityIcons name="keyboard-close" size={40} color={COLORS.purpleLight} />
+                        </TouchableOpacity>
+                    </View>
                 )}
-                <TouchableOpacity
-                    style={styles.arrowButton}
-                    onPress={() => nextInstruction("up")} >
-                    <FontAwesome name="arrow-right" size={60} color={COLORS.purpleLighter} />
-                </TouchableOpacity>
+
+                <Slider
+                    minimumValue={0}
+                    maximumValue={10}
+                    step={1}
+                    value={sectionNum}
+
+                    onValueChange={value => setSectionNum(value)}
+
+                    style={{ marginHorizontal: 10, height: 40 }}
+                    minimumTrackTintColor={COLORS.purpleDark}
+                    maximumTrackTintColor={COLORS.purpleLight}
+                    thumbTintColor={COLORS.purpleLighter}
+                />
             </View>
-        </View>
+
+            <Modal animationType="fade" transparent={true} visible={showInfo} onRequestClose={() => { setShowInfo(!showInfo) }}>
+                <SafeAreaView style={{ flex: 1 }}>
+                    <View style={{ height: 80, flexDirection: "row", justifyContent: "space-between" }}>
+                        <TouchableOpacity
+                            style={{ height: 80, width: 80, marginTop: 20 }}
+                            onPress={backFromNotes}>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ height: 80, width: 80, marginTop: 20 }}
+                            onPress={() => setShowInfo(false)}>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, backgroundColor: "#B8A2C770" }}>
+                        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+
+                            <TouchableOpacity style={{ position: "absolute", left: Dimensions.get("screen").width / 2 - 20, top: 18 }} onPress={() => setInfoBox(infoBox === 1 ? 0 : 1)}>
+                                <View style={globalStyles.infoIconFill} />
+                                <MaterialCommunityIcons name="chat-question-outline" size={60} color={COLORS.purpleDark} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ position: "absolute", right: 60, top: 150 }} onPress={() => setInfoBox(infoBox === 2 ? 0 : 2)}>
+                                <View style={globalStyles.infoIconFill} />
+                                <MaterialCommunityIcons name="chat-question-outline" size={60} color={COLORS.purpleDark} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ position: "absolute", right: 60, bottom: 100 }} onPress={() => setInfoBox(infoBox === 3 ? 0 : 3)}>
+                                <View style={globalStyles.infoIconFill} />
+                                <MaterialCommunityIcons name="chat-question-outline" size={60} color={COLORS.purpleDark} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ position: "absolute", left: Dimensions.get("screen").width / 2 - 20, bottom: 6 }} onPress={() => setInfoBox(infoBox === 4 ? 0 : 4)}>
+                                <View style={globalStyles.infoIconFill} />
+                                <MaterialCommunityIcons name="chat-question-outline" size={60} color={COLORS.purpleDark} />
+                            </TouchableOpacity>
+
+                            {infoBox > 0 &&
+                                (
+                                    <View style={globalStyles.infoBox}>
+                                        <Text style={FONTSTYLES.textBox}>
+                                            {infoBox == 1 && "Use the dropdown box to select the desired Activity Section."}
+                                            {infoBox == 2 && "Each Activity Section acts as a guide tailored to the user's Functionality Level."}
+                                            {infoBox == 3 && "Add additional notes for each section as reminders."}
+                                            {infoBox == 4 && "Quickly navigate between Activity Sections with the Slider."}
+                                        </Text>
+                                    </View>
+                                )
+                            }
+
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </Modal>
+
+        </LinearGradient >
     );
 }
 
@@ -167,5 +294,24 @@ export const styles = StyleSheet.create({
 
         alignItems: 'center',
         justifyContent: 'center',
-    }
-})
+    },
+    disabledButton: {
+        borderColor: COLORS.purpleSoft,
+        backgroundColor: COLORS.purpleLight,
+    },
+    notesInput: {
+        minHeight: 200,
+        borderColor: COLORS.textContainerDark,
+        borderRadius: 8,
+        borderWidth: 2,
+        padding: 10,
+
+        backgroundColor: COLORS.textContainer,
+
+        color: COLORS.black,
+        fontSize: 24,
+        fontFamily: 'Roboto',
+        textAlign: 'left',
+        textAlignVertical: "top",
+    },
+});
