@@ -1,11 +1,10 @@
-import React, { useLayoutEffect } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
-import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
+import { globalStyles, COLORS } from "../setters/styles";
 import { PatientRouteProp, ScreenNavigationProp } from "../setters/types";
-import { ProfileButton } from "../components/HeaderButtons";
 import ActivityButton from "../components/ActivityButton";
 
 const DailyActivities: React.FC = () => {
@@ -14,13 +13,17 @@ const DailyActivities: React.FC = () => {
     const patient = route.params.patient;
 
     return (
-        <View style={globalStyles.pageContainer}>
-            <ActivityButton navigation={navigation} patient={patient} activity={"Cooking"} />
-            <ActivityButton navigation={navigation} patient={patient} activity={"Dressing"} />
-            <ActivityButton navigation={navigation} patient={patient} activity={"Eating"} />
-            <ActivityButton navigation={navigation} patient={patient} activity={"Household Chores"} />
-            <ActivityButton navigation={navigation} patient={patient} activity={"Washing"} />
-        </View>
+        <LinearGradient
+            style={globalStyles.pageContainer}
+            colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}>
+            <ActivityButton navigation={navigation} patient={patient} activity={"Cooking"} favourited={false} />
+            <ActivityButton navigation={navigation} patient={patient} activity={"Dressing"} favourited={false} />
+            <ActivityButton navigation={navigation} patient={patient} activity={"Eating"} favourited={false} />
+            <ActivityButton navigation={navigation} patient={patient} activity={"Household Chores"} favourited={false} />
+            <ActivityButton navigation={navigation} patient={patient} activity={"Washing"} favourited={false} />
+        </LinearGradient>
     )
 }
 

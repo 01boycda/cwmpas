@@ -1,14 +1,20 @@
 import React from "react";
 import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Fontisto, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from "expo-linear-gradient";
 
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
 
 const About = () => {
 
     return (
-        <ScrollView style={{ backgroundColor: COLORS.purpleLight }}>
-            <View style={globalStyles.pageContainer}>
+
+        <LinearGradient
+            style={[globalStyles.pageContainer, { padding: 0 }]}
+            colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}>
+            <ScrollView style={{ padding: 12 }}>
                 <Image
                     style={styles.banner}
                     source={require("./../assets/cwmpas-banner.png")}
@@ -26,21 +32,25 @@ const About = () => {
                     </Text>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity onPress={() => { Linking.openURL('https://google.com') }}>
+                    <TouchableOpacity onPress={() => { Linking.openURL('https://www.facebook.com/profile.php?id=100091770139042') }}>
+                        <View style={styles.iconFill} />
                         <AntDesign name="facebook-square" color={COLORS.purpleDark} size={70} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { Linking.openURL('https://google.com') }}>
-                        <AntDesign name="instagram" color={COLORS.purpleDark} size={70} />
+                    <TouchableOpacity onPress={() => { Linking.openURL('https://www.cwmpasot.org/') }}>
+                        <View style={styles.iconWebFill} />
+                        <MaterialCommunityIcons name="web" color={COLORS.purpleDark} size={70} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { Linking.openURL('https://google.com') }}>
+                    <TouchableOpacity onPress={() => { Linking.openURL('https://www.linkedin.com/in/cwmpasot-community-interested-company-036133304/') }}>
+                        <View style={styles.iconFill} />
                         <AntDesign name="linkedin-square" color={COLORS.purpleDark} size={70} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { Linking.openURL('https://google.com') }}>
-                        <AntDesign name="weibo-square" color={COLORS.purpleDark} size={70} />
+                    <TouchableOpacity onPress={() => { Linking.openURL('https://twitter.com/CwmpasOT') }}>
+                        <View style={styles.iconXFill} />
+                        <FontAwesome6 name="square-x-twitter" color={COLORS.purpleDark} size={70} />
                     </TouchableOpacity>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </LinearGradient>
     )
 }
 
@@ -49,7 +59,9 @@ export default About;
 const styles = StyleSheet.create({
     banner: {
         backgroundColor: COLORS.purpleLighter,
+        borderColor: COLORS.purpleDark,
         borderRadius: 10,
+        borderWidth: 4,
 
         height: 100,
         width: '100%',
@@ -58,10 +70,49 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         marginVertical: 16,
     },
     webButton: {
         flex: 1,
+    },
+    iconFill: {
+        borderRadius: 8,
+        borderWidth: 4,
+
+        backgroundColor: COLORS.white,
+        position: "absolute",
+
+        left: 1,
+        top: 1,
+
+        height: 68.5,
+        width: 68,
+    },
+    iconWebFill: {
+        borderRadius: 34,
+        borderWidth: 4,
+
+        backgroundColor: COLORS.purpleLighter,
+        position: "absolute",
+
+        left: 3,
+        top: 3,
+
+        height: 64.5,
+        width: 64.5,
+    },
+    iconXFill: {
+        borderRadius: 13,
+        borderWidth: 4,
+
+        backgroundColor: COLORS.white,
+        position: "absolute",
+
+        top: 3,
+        left: -4,
+
+        height: 68,
+        width: 68.5,
     }
 })

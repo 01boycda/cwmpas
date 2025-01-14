@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ColorValue, Keyboard, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import * as SQLite from "expo-sqlite";
+import { LinearGradient } from "expo-linear-gradient";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
+import { DATABASE_NAME, INPUT_PLACEHOLDER } from "../setters/constantValues";
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { DATABASE_NAME, Patient, PatientRouteProp, ScreenNavigationProp } from "../setters/types";
+import { Patient, PatientRouteProp, ScreenNavigationProp } from "../setters/types";
 
 const PatientInfo = () => {
     const route = useRoute<PatientRouteProp>();
     const navigation = useNavigation<ScreenNavigationProp>();
     const [patient, setPatient] = useState<Patient>(route.params.patient);
-
 
     // Name Input Vars
     const [firstName, setFirstName] = useState<string>(patient.firstName);
@@ -50,7 +51,7 @@ const PatientInfo = () => {
         toggleDatePicker();
     }
 
-    // Functionality
+    // Functionality Test
     const retakeTest = () => {
         navigation.navigate("FunctionalityTest", { patient: patient });
     }
@@ -58,7 +59,7 @@ const PatientInfo = () => {
     const ActivitySection = ({ category, colour }: { category: string, colour: ColorValue }) => {
         const key = `${category}Level` as keyof Patient;
         return (
-            <View style={{ flexDirection: "row", justifyContent: "space-between", backgroundColor: colour }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", backgroundColor: colour, borderRadius: 8, paddingHorizontal: 10, flex: 0.5}}>
                 <Text style={styles.functionalitySection}>{category.charAt(0).toUpperCase() + category.slice(1)}:</Text>
                 <Text style={styles.functionalitySection}>{patient[key]}</Text>
             </View>
@@ -66,7 +67,13 @@ const PatientInfo = () => {
     }
 
     // Edit profile
+    const pageRef = useRef<ScrollView>(null);
     const [editEnabled, setEditEnabled] = useState<boolean>(false);
+
+    const openEditing = () => {
+        pageRef.current?.scrollTo({ y: 0, animated: true });
+        setEditEnabled(true);
+    }
 
     const saveProfile = async () => {
         const db: SQLite.SQLiteDatabase = await SQLite.openDatabaseAsync(DATABASE_NAME);
@@ -98,24 +105,32 @@ const PatientInfo = () => {
     }
 
     return (
-        <ScrollView style={{ backgroundColor: COLORS.purpleLight, }}>
-            <View style={globalStyles.pageContainer}>
+        <LinearGradient
+            style={[globalStyles.pageContainer, { padding: 0 }]}
+            colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}>
+            <ScrollView style={{ padding: 16 }} ref={pageRef}>
+
                 <Text style={FONTSTYLES.inputHeaderText}>First Name</Text>
                 <TextInput
                     editable={editEnabled}
                     style={globalStyles.input}
+                    returnKeyType="done"
                     value={firstName}
                     onChangeText={setFirstName}
                     cursorColor={COLORS.purpleDark}
                     selectionColor={COLORS.purpleDark}
                 />
 
-                {middleNames !== "" && (
+                {middleNames !== "" || editEnabled && (
                     <>
                         <Text style={FONTSTYLES.inputHeaderText}>Middle Names</Text>
                         <TextInput
-                            editable={editEnabled}
                             style={globalStyles.input}
+                            returnKeyType="done"
+                            placeholder={INPUT_PLACEHOLDER}
+                            placeholderTextColor={COLORS.purpleSoft}
                             value={middleNames}
                             onChangeText={setMiddleNames}
                             cursorColor={COLORS.purpleDark}
@@ -128,6 +143,7 @@ const PatientInfo = () => {
                 <TextInput
                     editable={editEnabled}
                     style={globalStyles.input}
+                    returnKeyType="done"
                     value={lastName}
                     onChangeText={setLastName}
                     cursorColor={COLORS.purpleDark}
@@ -147,16 +163,15 @@ const PatientInfo = () => {
 
                 <View style={styles.divider} />
 
-                {patient.fLevel === "Finish Assessment" ?
-
+                {patient.fLevel === "Finish Assessment" && (
                     <TouchableOpacity
                         onPress={retakeTest}
                         style={globalStyles.button}>
                         <Text style={[FONTSTYLES.buttonText, { color: COLORS.warning }]}>Finish Test</Text>
                     </TouchableOpacity>
+                )}
 
-                    :
-
+                {!editEnabled && patient.fLevel !== "Finish Assessment" && (
                     <>
                         <Text style={FONTSTYLES.inputHeaderText}>Functionality Level</Text>
                         <View style={[globalStyles.input, styles.fBarContainer]}>
@@ -183,22 +198,24 @@ const PatientInfo = () => {
                             selectionColor={COLORS.purpleDark}
                         />
 
-                        <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                            <View style={{ flex: 1, marginHorizontal: 5 }}>
-                                <ActivitySection category="cooking" colour={COLORS.purpleLighter} />
-                                <ActivitySection category="dressing" colour={COLORS.purpleLight} />
-                                <ActivitySection category="eating" colour={COLORS.purpleLighter} />
-                                <ActivitySection category="chores" colour={COLORS.purpleLight} />
-                                <ActivitySection category="washing" colour={COLORS.purpleLighter} />
-                                <ActivitySection category="cognitive" colour={COLORS.purpleLight} />
+                        <View style={{ flexDirection: "row", columnGap: 10, marginBottom: 6 }}>
+                            <View style={{ flex: 1, rowGap: 6 }}>
+                                <ActivitySection category="cooking" colour={rowColors[1]} />
+                                <ActivitySection category="dressing" colour={rowColors[0]} />
+                                <ActivitySection category="eating" colour={rowColors[1]} />
+                                <ActivitySection category="chores" colour={rowColors[0]} />
+                                <ActivitySection category="washing" colour={rowColors[1]} />
                             </View>
-                            <View style={{ flex: 1, marginHorizontal: 5 }}>
-                                <ActivitySection category="reading" colour={COLORS.purpleLighter} />
-                                <ActivitySection category="communication" colour={COLORS.purpleLight} />
-                                <ActivitySection category="socialising" colour={COLORS.purpleLighter} />
-                                <ActivitySection category="leisure" colour={COLORS.purpleLight} />
-                                <ActivitySection category="physical" colour={COLORS.purpleLighter} />
+                            <View style={{ flex: 1, rowGap: 6 }}>
+                                <ActivitySection category="reading" colour={rowColors[1]} />
+                                <ActivitySection category="communication" colour={rowColors[0]} />
+                                <ActivitySection category="socialising" colour={rowColors[1]} />
+                                <ActivitySection category="leisure" colour={rowColors[0]} />
+                                <ActivitySection category="physical" colour={rowColors[1]} />
                             </View>
+                        </View>
+                        <View style={{ flexDirection: "row", marginBottom: 20, justifyContent: "center" }}>
+                            <ActivitySection category="cognitive" colour={rowColors[0]} />
                         </View>
 
                         <TouchableOpacity
@@ -206,10 +223,10 @@ const PatientInfo = () => {
                             style={globalStyles.button}>
                             <Text style={FONTSTYLES.buttonText}>Retake Test</Text>
                         </TouchableOpacity>
-                    </>
-                }
 
-                <View style={styles.divider} />
+                        <View style={styles.divider} />
+                    </>
+                )}
 
                 <Text style={FONTSTYLES.inputHeaderText}>Profile Created</Text>
                 <TextInput
@@ -229,7 +246,7 @@ const PatientInfo = () => {
                 )}
                 {!editEnabled && (
                     <TouchableOpacity
-                        onPress={() => setEditEnabled(true)}
+                        onPress={openEditing}
                         style={globalStyles.button}>
                         <Text style={FONTSTYLES.buttonText}>Edit Profile</Text>
                     </TouchableOpacity>
@@ -241,8 +258,12 @@ const PatientInfo = () => {
                     <Text style={FONTSTYLES.buttonText}>Delete Profile</Text>
                 </TouchableOpacity>
 
-                {showPicker && (
-                    <View style={globalStyles.datePickerContainer}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showPicker}
+                    onRequestClose={() => { setShowPicker(!showPicker) }}>
+                    <View style={globalStyles.hoverContainer}>
                         <DateTimePicker
                             mode="date"
                             display="spinner"
@@ -263,7 +284,7 @@ const PatientInfo = () => {
                         )}
 
                     </View>
-                )}
+                </Modal>
 
                 <Modal
                     animationType="slide"
@@ -273,7 +294,7 @@ const PatientInfo = () => {
                         setDeleting(!deleting);
                     }}>
                     <View style={{ flex: 1 }}>
-                        <View style={globalStyles.alertMessageContainer}>
+                        <View style={globalStyles.hoverContainer}>
                             <Text style={FONTSTYLES.subheaderText}>Deleting Profile</Text>
                             <Text style={[FONTSTYLES.textBox, { textAlign: "center" }]}>Once completed all patient data will be permanently deleted</Text>
                             <TouchableOpacity
@@ -291,8 +312,8 @@ const PatientInfo = () => {
                 </Modal>
 
 
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </LinearGradient >
     )
 }
 
@@ -337,5 +358,10 @@ const styles = StyleSheet.create({
 
         color: COLORS.purpleDark,
         fontFamily: 'Roboto-Bold',
-    }
+    },
 })
+
+const rowColors = [
+    COLORS.backgroundGradBottom,
+    COLORS.backgroundGradTop,
+]

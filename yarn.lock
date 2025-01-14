@@ -1640,6 +1640,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-community/slider@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.5.5.tgz"
+  integrity sha512-x2N415pg4ZxIltArOKczPwn7JEYh+1OxQ4+hTnafomnMsqs65HZuEWcX+Ch8c5r8V83DiunuQUf5hWGWlw8hQQ==
+
 "@react-native/assets-registry@0.76.5":
   version "0.76.5"
   resolved "https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.76.5.tgz"
@@ -3042,6 +3047,11 @@ expo-asset@~11.0.1:
     expo-constants "~17.0.0"
     invariant "^2.2.4"
     md5-file "^3.2.3"
+
+expo-checkbox@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/expo-checkbox/-/expo-checkbox-4.0.0.tgz"
+  integrity sha512-kgmdau1cmlztRVEdjAQkdBCBSvI3W1Z6B+gTTr5ickbItxz07qt3j6dQEB3VDL69/bnIN/h9/iwNLVxuSn/C2Q==
 
 expo-constants@~17.0.0, expo-constants@~17.0.3:
   version "17.0.3"
@@ -5016,6 +5026,11 @@ react-native-dropdown-picker@^5.4.6:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-hide-onkeyboard@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/react-native-hide-onkeyboard/-/react-native-hide-onkeyboard-1.0.1.tgz"
+  integrity sha512-S7IsZ/S11GPv0z87X1X0BOOY0ZFwwinVTN/pK1HKy5TZqSKG2xjktH1zQma6ngKhM+iJe2t5xd/y+zD3BIQ8Sw==
 
 react-native-safe-area-context@^5.0.0, "react-native-safe-area-context@>= 4.0.0":
   version "5.0.0"

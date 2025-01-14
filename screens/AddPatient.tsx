@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, Modal, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
+import { DATABASE_NAME, INPUT_PLACEHOLDER } from "../setters/constantValues";
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { DATABASE_NAME, Patient, ScreenNavigationProp } from "../setters/types";
+import { Patient, ScreenNavigationProp } from "../setters/types";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
 import * as SQLite from "expo-sqlite";
@@ -15,7 +16,6 @@ const AddPatient = () => {
     const [firstName, setFirstName] = useState<string>("");
     const [middleNames, setMiddleNames] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
-
 
     // Date Picker Vars
     const [dob, setDob] = useState<string>("");
@@ -56,35 +56,43 @@ const AddPatient = () => {
         let lastAssessment = new Date(0).toLocaleDateString();
         console.log("Joined:", joined, "Last Assessment:", lastAssessment);
 
-        let updatedDB = await db.runAsync(`INSERT INTO patients (firstName, middleNames, lastName, dob, joined, fScore, fLevel, lastAssessment, cookingLevel, dressingLevel, eatingLevel, choresLevel, washingLevel, readingLevel, communicationLevel, socialisingLevel, leisureLevel, physicalLevel, cognitiveLevel) VALUES ('${firstName}', '${middleNames}', '${lastName}', '${dob}', '${joined}', 0, 'Finish Assessment', '${lastAssessment}', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);`);
-        console.log("Last Patient ID:", updatedDB.lastInsertRowId);
+        try {
+            let updatedDB = await db.runAsync(`INSERT INTO patients (firstName, middleNames, lastName, dob, joined, fScore, fLevel, lastAssessment, cookingLevel, dressingLevel, eatingLevel, choresLevel, washingLevel, readingLevel, communicationLevel, socialisingLevel, leisureLevel, physicalLevel, cognitiveLevel, siblings, married) VALUES ('${firstName}', '${middleNames}', '${lastName}', '${dob}', '${joined}', 0, 'Finish Assessment', '${lastAssessment}', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);`);
 
-        let newPatient: Patient = {
-            id: updatedDB.lastInsertRowId,
-            firstName: firstName,
-            middleNames: middleNames,
-            lastName: lastName,
-            dob: dob,
+            console.log("Last Patient ID:", updatedDB.lastInsertRowId);
 
-            joined: new Date().toLocaleDateString(),
-            fScore: 0,
-            fLevel: "Finish Assessment",
-            lastAssessment: new Date(0).toLocaleDateString(),
+            let newPatient: Patient = {
+                id: updatedDB.lastInsertRowId,
+                firstName: firstName,
+                middleNames: middleNames,
+                lastName: lastName,
+                dob: dob,
 
-            cookingLevel: 0,
-            dressingLevel: 0,
-            eatingLevel: 0,
-            choresLevel: 0,
-            washingLevel: 0,
-            readingLevel: 0,
-            communicationLevel: 0,
-            socialisingLevel: 0,
-            leisureLevel: 0,
-            physicalLevel: 0,
-            cognitiveLevel: 0
+                joined: new Date().toLocaleDateString(),
+                fScore: 0,
+                fLevel: "Finish Assessment",
+                lastAssessment: new Date(0).toLocaleDateString(),
+
+                cookingLevel: 0,
+                dressingLevel: 0,
+                eatingLevel: 0,
+                choresLevel: 0,
+                washingLevel: 0,
+                readingLevel: 0,
+                communicationLevel: 0,
+                socialisingLevel: 0,
+                leisureLevel: 0,
+                physicalLevel: 0,
+                cognitiveLevel: 0,
+
+                siblings: false,
+                married: false,
+            }
+
+            navigation.navigate("FunctionalityTest", { patient: newPatient });
+        } catch (e) {
+            console.log("Error adding patient:\n", e);
         }
-
-        navigation.navigate("FunctionalityTest", { patient: newPatient });
     }
 
     return (
@@ -94,7 +102,7 @@ const AddPatient = () => {
                 <TextInput
                     style={globalStyles.input}
                     onChangeText={setFirstName}
-                    placeholder="Tap"
+                    placeholder={INPUT_PLACEHOLDER}
                     returnKeyType="done"
                     placeholderTextColor={COLORS.purpleSoft}
                     selectionColor={COLORS.purpleDark}
@@ -104,7 +112,7 @@ const AddPatient = () => {
                 <TextInput
                     style={globalStyles.input}
                     onChangeText={setMiddleNames}
-                    placeholder="Tap"
+                    placeholder={INPUT_PLACEHOLDER}
                     returnKeyType="done"
                     placeholderTextColor={COLORS.purpleSoft}
                     selectionColor={COLORS.purpleDark}
@@ -114,27 +122,32 @@ const AddPatient = () => {
                 <TextInput
                     style={globalStyles.input}
                     onChangeText={setLastName}
-                    placeholder="Tap"
+                    placeholder={INPUT_PLACEHOLDER}
                     returnKeyType="done"
                     placeholderTextColor={COLORS.purpleSoft}
                     selectionColor={COLORS.purpleDark}
                 />
 
                 <Text style={FONTSTYLES.inputHeaderText}>Date of Birth</Text>
-                {!showPicker && (
-                    <Pressable onPress={toggleDatePicker}>
-                        <TextInput
-                            style={globalStyles.input}
-                            placeholder="Tap"
-                            value={dob}
-                            placeholderTextColor={COLORS.purpleSoft}
-                            editable={false}
-                            onPressIn={toggleDatePicker}
-                        />
-                    </Pressable>
-                )}
-                {showPicker && (
-                    <View style={globalStyles.datePickerContainer}>
+                <Pressable onPress={toggleDatePicker}>
+                    <TextInput
+                        style={globalStyles.input}
+                        placeholder={INPUT_PLACEHOLDER}
+                        value={dob}
+                        placeholderTextColor={COLORS.purpleSoft}
+                        editable={false}
+                        onPressIn={toggleDatePicker}
+                    />
+                </Pressable>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showPicker}
+                    onRequestClose={() => {
+                        setShowPicker(!showPicker);
+                    }}>
+                    <View style={globalStyles.hoverContainer}>
                         <DateTimePicker
                             mode="date"
                             display="spinner"
@@ -155,7 +168,7 @@ const AddPatient = () => {
                         )}
 
                     </View>
-                )}
+                </Modal>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <TouchableOpacity

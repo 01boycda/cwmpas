@@ -1,15 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import Navigator from "./Navigator";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
-import { COLORS } from "./setters/styles";
-
 const App = () => {
   const [loaded, error] = useFonts({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
 
@@ -24,7 +23,7 @@ const App = () => {
   }
 
   return (
-    <View style={styles.appContainer}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView style={styles.appContainer}>
         <Navigator />
       </SafeAreaView>
@@ -37,7 +36,8 @@ export default App;
 
 const styles = StyleSheet.create({
   appContainer: {
-    backgroundColor: COLORS.black,
+    backgroundColor: "black",
     flex: 1,
-  }
+    paddingTop: Platform.OS === "android" ? 25 : 0,
+  },
 })

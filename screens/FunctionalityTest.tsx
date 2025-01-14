@@ -4,9 +4,11 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import * as SQLite from "expo-sqlite";
+import { LinearGradient } from "expo-linear-gradient";
 
+import { DATABASE_NAME } from "../setters/constantValues";
 import { globalStyles, COLORS, FONTSTYLES } from "../setters/styles";
-import { DATABASE_NAME, Level, Patient, PatientRouteProp, ScreenNavigationProp } from "../setters/types";
+import { Level, Patient, PatientRouteProp, ScreenNavigationProp } from "../setters/types";
 
 import questions from "../data/questionnaire";
 
@@ -123,7 +125,11 @@ const FunctionalityTest = () => {
     // Render welcome message if no answers completed
     if (showWelcome) {
         return (
-            <View style={[globalStyles.pageContainer, { justifyContent: 'space-between' }]}>
+            <LinearGradient
+                style={globalStyles.pageContainer}
+                colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+                start={{ x: 0.5, y: 0 }}
+                end={{ x: 0.5, y: 1 }}>
                 <Text style={[FONTSTYLES.subheaderText, { fontSize: 40, textAlign: 'center' }]}>Welcome!</Text>
                 <View style={globalStyles.scrollContainer}>
                     <Text style={[FONTSTYLES.textBox]}>
@@ -139,7 +145,7 @@ const FunctionalityTest = () => {
                 <TouchableOpacity style={globalStyles.button} onPress={handleWelcomeMessage}>
                     <Text style={FONTSTYLES.buttonText}>Continue</Text>
                 </TouchableOpacity>
-            </View>
+            </LinearGradient>
         )
     }
 
@@ -156,7 +162,11 @@ const FunctionalityTest = () => {
 
     // Render question
     return (
-        <View style={globalStyles.pageContainer}>
+        <LinearGradient
+            style={globalStyles.pageContainer}
+            colors={[COLORS.backgroundGradTop, COLORS.backgroundGradBottom]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}>
             <Text style={styles.questionHeader}>{questions[questionNum].heading}</Text>
             <Text style={styles.questionTracker}>Question {questionNum + 1}/11</Text>
             <QuestionButton q={questionNum} a={1} />
@@ -179,7 +189,7 @@ const FunctionalityTest = () => {
                     <AntDesign name={questionNum < 10 ? "right" : "like2"} size={40} color={COLORS.purpleLighter} />
                 </TouchableOpacity>
             </View>
-        </View>
+        </LinearGradient>
     );
 }
 
